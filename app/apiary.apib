@@ -1,0 +1,120 @@
+FORMAT: 1A
+
+# Running API
+
+## Group User
+
+### Is Login [Get /api/agenda/user/login{?userid}]
+
++ Parameters
+
+  + loginid (string, required)
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "username": "test"
+    }
+
+  + Response 401 (application/json)
+
+    + Body
+
+      {
+        "message":"no login"
+      }
+
+### Login [POST /api/agenda/user/login]
+
++ Request(application/json)
+
+  + Body
+
+    {
+      "username": "test",
+      "password": "12345678"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"login success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "login fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Register [POST /api/agenda/user/register]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "username":"test",
+      "passqord":"12345678",
+      "email":"test@163.com",
+      "phone":"12345679101"
+    }
+
++ Response 200 (application/json)
+
+  + Header
+
+    + Location: /api/agenda/user/login
+
+  + Body
+
+    {
+      "message":"register success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "register fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Logout [POST /api/agenda/user/logout]
+
++ Response 200 (application/json)
+
+    + Header
+
+      + Location: /api/agenda/login
+
+    + Response
+
+      + Body
+
+        {
+          "message":"logout success"
+        }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
