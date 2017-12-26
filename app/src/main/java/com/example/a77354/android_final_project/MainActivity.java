@@ -30,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
         final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
         indicator.setColor(Color.WHITE);
         getSupportActionBar().setHomeAsUpIndicator(indicator);
-
-        setTransformer();
-        //setListener();
+        
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerLayout.setScrimColor(Color.TRANSPARENT);
         drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
@@ -41,67 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 if (((ViewGroup) drawerView).getChildAt(1).getId() == R.id.leftSideBar) {
                     indicator.setProgress(slideOffset);
                 }
-            }
-        });
-    }
-
-//    private void setListener() {
-//        final TextView tipView = (TextView) findViewById(R.id.tipView);
-//        SideBar leftSideBar = (SideBar) findViewById(R.id.leftSideBar);
-//        leftSideBar.setFantasyListener(new SimpleFantasyListener() {
-//            public boolean onHover(@Nullable View view) {
-//                tipView.setVisibility(View.VISIBLE);
-//                if (view instanceof TextView) {
-//                    tipView.setText(((TextView) view).getText());
-//                } else if (view != null && view.getId() == R.id.userInfo) {
-//                    tipView.setText("个人中心");
-//                } else {
-//                    tipView.setText(null);
-//                }
-//                return true;
-//            }
-//            public boolean onSelect(View view) {
-//                startActivity(UniversalActivity.newIntent(getApplicationContext(), ((TextView) view).getText().toString()));
-//                tipView.setVisibility(View.INVISIBLE);
-//                return false;
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                tipView.setVisibility(View.INVISIBLE);
-//            }
-//        });
-//    }
-
-    private void setTransformer() {
-        final float spacing = getResources().getDimensionPixelSize(R.dimen.spacing);
-        SideBar rightSideBar = (SideBar) findViewById(R.id.rightSideBar);
-        rightSideBar.setTransformer(new Transformer() {
-            private View lastHoverView;
-
-            @Override
-            public void apply(ViewGroup sideBar, View itemView, float touchY, float slideOffset, boolean isLeft) {
-                boolean hovered = itemView.isPressed();
-                if (hovered && lastHoverView != itemView) {
-                    animateIn(itemView);
-                    animateOut(lastHoverView);
-                    lastHoverView = itemView;
-                }
-            }
-
-            private void animateOut(View view) {
-                if (view == null) {
-                    return;
-                }
-                ObjectAnimator translationX = ObjectAnimator.ofFloat(view, "translationX", -spacing, 0);
-                translationX.setDuration(200);
-                translationX.start();
-            }
-
-            private void animateIn(View view) {
-                ObjectAnimator translationX = ObjectAnimator.ofFloat(view, "translationX", 0, -spacing);
-                translationX.setDuration(200);
-                translationX.start();
             }
         });
     }
@@ -121,11 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         if (view instanceof TextView) {
             String title = ((TextView) view).getText().toString();
-            if (title.startsWith("星期")) {
-                Toast.makeText(this, title, Toast.LENGTH_SHORT).show();
-            } else {
-                startActivity(UniversalActivity.newIntent(this, title));
-            }
+            startActivity(UniversalActivity.newIntent(this, title));
         } else if (view.getId() == R.id.userInfo) {
             startActivity(UniversalActivity.newIntent(this, "个人中心"));
         }
