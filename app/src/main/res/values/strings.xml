@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Android_final_project</string>
+    <string name="app_name">奔跑吧</string>
+    <string name="appwidget_text">奔跑吧</string>
+    <string name="add_widget">Add 奔跑吧 widget</string>
 </resources>
