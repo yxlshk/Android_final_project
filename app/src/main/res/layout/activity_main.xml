@@ -33,7 +33,7 @@
                 android:onClick="onClick"
                 android:orientation="vertical">
 
-                <com.example.a77354.android_final_project.CircleImageView
+                <com.example.a77354.android_final_project.Widget.CircleImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_margin="10dp"

@@ -5,9 +5,10 @@
     <color name="colorPrimaryDark">#324968</color>
     <color name="blue">#4093ff</color>
     <color name="colorAccent">#f272ce</color>
-    <color name="themeBule">#1657e2</color>
+    <color name="themeBule">#052374</color>
     <color name="black">#1a1a1a</color>
     <color name="transparent">#00000000</color>
     <color name="halfTransparent">#e0000000</color>
     <color name="white">#ffffff</color>
+    <color name="green">#E4FD56</color>
 </resources>
