@@ -1,10 +1,10 @@
 FORMAT: 1A
 
-# Running API
+# Runner API
 
 ## Group User
 
-### Is Login [Get /api/agenda/user/login{?userid}]
+### Is Logged In [GET /api/runner/user/login{?loginid}]
 
 + Parameters
 
@@ -18,15 +18,15 @@ FORMAT: 1A
       "username": "test"
     }
 
-  + Response 401 (application/json)
++ Response 401 (application/json)
 
-    + Body
+  + Body
 
-      {
-        "message":"no login"
-      }
+    {
+      "message":"no login"
+    }
 
-### Login [POST /api/agenda/user/login]
+### Login [POST /api/runner/user/login]
 
 + Request(application/json)
 
@@ -54,9 +54,8 @@ FORMAT: 1A
       "data": {
         "error":"error_message"
       }
-    }
 
-### Register [POST /api/agenda/user/register]
+### Register [POST /api/runner/user/register]
 
 + Request (application/json)
 
@@ -64,16 +63,18 @@ FORMAT: 1A
 
     {
       "username":"test",
-      "passqord":"12345678",
+      "password":"12345678",
+      "school":"test_school",
       "email":"test@163.com",
-      "phone":"12345679101"
+      "phone":"12345679101",
+      "head_img":"test_path"
     }
 
 + Response 200 (application/json)
 
   + Header
 
-    + Location: /api/agenda/user/login
+    + Location: /api/runner/user/login
 
   + Body
 
@@ -92,13 +93,13 @@ FORMAT: 1A
       }
     }
 
-### Logout [POST /api/agenda/user/logout]
+### Logout [POST /api/runner/user/logout]
 
 + Response 200 (application/json)
 
     + Header
 
-      + Location: /api/agenda/login
+      + Location: /api/runner/login
 
     + Response
 
@@ -113,7 +114,387 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "fail",
+      "message": "logout fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Get User Message [GET /api/runner/user{?username}]
+
++ Parameters
+
+  + username (string, required)
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "username":"test_user",
+      "school":"test_school",
+      "email":"test@163.com",
+      "phone":"12345679101"
+    }
+
++ Response 401 (application/json)
+
+  + Body
+
+    {
+      "message": "get user message fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+
+## Group Plan
+
+### Create Plan [POST /api/runner/plan]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "planname":"test_plan",
+      "runtime":"2017-12-27 10:00:00",
+      "partner":["test_partner1", "test_partner2", "test_partner3"],
+      "place":"tset_place"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"create plan success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "create plan fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Get All Plans [GET /api/runner/plans]
+
++ Response 200 (application/json)
+
+  + Body
+    {
+      [
+        {
+          "planid":"1",
+          "planname":"test_plan1",
+          "author":"test_author1",
+          "runtime":"2017-12-27 10:00:00",
+          "partner":["test_partner1", "test_partner2", "test_partner3"],
+          "place":"tset_place1"
+        },
+        {
+          "planid":"2",
+          "planname":"test_plan1",
+          "author":"test_author1",
+          "runtime":"2017-12-27 10:00:00",
+          "partner":["test_partner1", "test_partner2", "test_partner3"],
+          "place":"tset_place1"
+        }
+      ]
+    }
+
++ Response 401 (application/json)
+
+  + Body
+
+    {
+      "message": "get all plans fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Delete Plan [DELETE /api/runner/plans/{planname}]
+
++ Response 200 (application/json)
+
+    + Header
+
+      Location: /api/plan
+
+    + Body
+
+      {
+        "message":"delete plan success"
+      }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "create plan fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+
+## Group Music List
+
+### Insert Music [POST /api/runner/music]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "musicname":["test_music1", "test_music2"]
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"insert music success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "insert music fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Delete Music [DELETE /api/runner/music/{musicname}]
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message": "delete music success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "delete music fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Get All Musics [GET /api/runner/musics]
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      [
+        {
+          "musicid":"1",
+          "musicname":"test_music1"
+        }
+        { "musicid":"2",
+          "musicname":"test_music2"
+        }
+      ]
+    }
+
++ Response 400 (application/json)
+
+  + Body
+    {
+      "message": "get all musics fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+## Group Article
+
+### Create Article [POST /api/runner/article]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "title":"test_article",
+      "content":"tset_content"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"create article success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "create article fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Delete Article [DELETE /api/runner/article/{title}]
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"delete article success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "delete article fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Get All Article [GET /api/runner/articles]
+
++ Response 200 (application/json)
+
+  + Body
+
+  {
+    [
+      {
+        "articleid":"1",
+        "title":"test_title1",
+        "author":"test_content1",
+        "create_time":"2017-12-27 13:00:00"
+      },
+      {
+        "articleid":"2",
+        "title":"test_title2",
+        "author":"test_content2",
+        "create_time":"2017-12-27 13:00:00"
+      }
+    ]
+  }
+
++ Response 401 (application/json)
+
+  + Body
+
+    {
+      "message": "get all articles fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+## Group Comment
+
+### Create Comment [POST /api/runner/comment]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "title":"comment_article",
+      "content":"comment_content"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"create comment success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "create comment fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Delete Comment [DELETE /api/runner/comment/{commentid}]
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"delete comment success"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "delete article fail",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Get All Comments [GET /api/runner/comments]
+
++ Response 200 (application/json)
+
+  + Body
+
+  {
+    [
+      {
+        "commentid":"1",
+        "title":"test_title1",
+        "author":"test_content1",
+        "create_time":"2017-12-27 13:00:00"
+      },
+      {
+        "commentid":"2",
+        "title":"test_title1",
+        "author":"test_content1",
+        "create_time":"2017-12-27 13:00:00"
+      }
+    ]
+  }
+
++ Response 401 (application/json)
+
+  + Body
+
+    {
+      "message": "get all articles fail",
       "data": {
         "error":"error_message"
       }
