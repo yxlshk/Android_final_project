@@ -24,7 +24,7 @@
         <activity android:name=".RunPlan.RunPlanActivity"> </activity>
         <activity android:name=".RunMusic.RunMusicActivity"> </activity>
         <activity android:name=".LoginAndRegister.RegisterActivity"> </activity>
-
+        <activity android:name=".PersonalActivity"> </activity>
     </application>
 
 </manifest>

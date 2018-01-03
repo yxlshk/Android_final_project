@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_layout);
 
         //临时写的登录逻辑 账号123 密码123
-        final EditText username = (EditText) findViewById(R.id.userName);
+        final EditText username = (EditText) findViewById(R.id.userId);
         final EditText password = (EditText) findViewById(R.id.password);
         Button signin = (Button) findViewById(R.id.sign_in);
         signin.setOnClickListener(new View.OnClickListener() {

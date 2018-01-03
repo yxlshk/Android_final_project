@@ -1,5 +1,6 @@
 <com.sothree.slidinguppanel.SlidingUpPanelLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sliding_layout"
@@ -18,11 +19,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/bg2">
+        android:background="@drawable/bg5">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/music_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="right|bottom"
+            android:src="@drawable/add_icon"
+            app:backgroundTint="@color/transparent"
+            app:rippleColor="@color/transparent"
+            app:elevation="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="60dp"
+            />
     </FrameLayout>
 
     <!-- SLIDING LAYOUT -->
@@ -101,7 +114,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg2">
+            android:background="@drawable/bg5">
 
             <TextView
                 android:layout_width="wrap_content"

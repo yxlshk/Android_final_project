@@ -8,7 +8,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:id="@+id/reg_userName"
+        android:id="@+id/reg_userId"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="120dp"
