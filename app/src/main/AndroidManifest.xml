@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity android:name=".LoginAndRegister.LoginActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".RunPlan.RunPlanActivity"> </activity>
         <activity android:name=".RunMusic.RunMusicActivity"> </activity>
+        <activity android:name=".LoginAndRegister.RegisterActivity"> </activity>
 
     </application>
 
