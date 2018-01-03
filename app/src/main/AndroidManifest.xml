@@ -9,18 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginAndRegister.LoginActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity">
+        </activity>
         <activity android:name=".UniversalActivity">
         </activity>
         <activity android:name=".RunPlan.RunPlanActivity"> </activity>
         <activity android:name=".RunMusic.RunMusicActivity"> </activity>
-
+        <activity android:name=".LoginAndRegister.RegisterActivity"> </activity>
+        <activity android:name=".PersonalActivity"> </activity>
+        <activity android:name=".RunPlan.AddNewPlanActivity"> </activity>
     </application>
 
 </manifest>

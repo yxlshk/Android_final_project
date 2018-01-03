@@ -33,7 +33,7 @@
                 android:onClick="onClick"
                 android:orientation="vertical">
 
-                <com.example.a77354.android_final_project.CircleImageView
+                <com.example.a77354.android_final_project.Widget.CircleImageView
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_margin="10dp"
@@ -56,12 +56,12 @@
 
             <TextView
                 style="@style/MenuText"
-                android:drawableLeft="@drawable/wallet"
+                android:drawableLeft="@drawable/ic_watch_later_white_48dp"
                 android:text="跑步计划" />
 
             <TextView
                 style="@style/MenuText"
-                android:drawableLeft="@drawable/coupon"
+                android:drawableLeft="@drawable/ic_queue_music_white_48dp"
                 android:text="跑步歌单" />
 
             <TextView
