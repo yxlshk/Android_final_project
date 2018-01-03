@@ -1,5 +1,6 @@
 package com.example.a77354.android_final_project.RunPlan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -56,6 +58,15 @@ public class RunPlanActivity extends AppCompatActivity implements SwipeBackActiv
             @Override
             public void onItemSelected(int position) {
 //                ((TextView)findViewById(R.id.index)).setText((position+1)+"/"+mList.getLayoutManager().getItemCount());
+            }
+        });
+
+
+        Button addNewPlanBtn = (Button) findViewById(R.id.add_new_plan_button);
+        addNewPlanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(RunPlanActivity.this, AddNewPlanActivity.class));
             }
         });
     }
