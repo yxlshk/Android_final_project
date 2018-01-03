@@ -4,6 +4,28 @@ FORMAT: 1A
 
 ## Group User
 
+### Is Logged In [GET /api/runner/user/login{?loginid}]
+
++ Parameters
+
+  + loginid (string, required)
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "username": "test"
+    }
+
++ Response 401 (application/json)
+
+  + Body
+
+    {
+      "message":"no login"
+    }
+
 ### Login [POST /api/runner/user/login]
 
 + Request(application/json)
@@ -11,7 +33,7 @@ FORMAT: 1A
   + Body
 
     {
-      "userid": "test123",
+      "username": "test",
       "password": "12345678"
     }
 
@@ -20,7 +42,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message":"Login successful"
+      "message":"login success"
     }
 
 + Response 400 (application/json)
@@ -28,7 +50,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Fail to login",
+      "message": "login fail",
       "data": {
         "error":"error_message"
       }
@@ -40,12 +62,12 @@ FORMAT: 1A
   + Body
 
     {
-      "userid":"test123",
       "username":"test",
       "password":"12345678",
       "school":"test_school",
       "email":"test@163.com",
-      "phone":"12345679101"
+      "phone":"12345679101",
+      "head_img":"test_path"
     }
 
 + Response 200 (application/json)
@@ -57,7 +79,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message":"Registered successfully"
+      "message":"register success"
     }
 
 + Response 400 (application/json)
@@ -65,7 +87,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Fail to register",
+      "message": "register fail",
       "data": {
         "error":"error_message"
       }
@@ -84,7 +106,7 @@ FORMAT: 1A
       + Body
 
         {
-          "message":"Logout successful"
+          "message":"logout success"
         }
 
 + Response 400 (application/json)
@@ -92,24 +114,23 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to logout",
+      "message": "logout fail",
       "data": {
         "error":"error_message"
       }
     }
 
-### Get User Message [GET /api/runner/user{?userid}]
+### Get User Message [GET /api/runner/user{?username}]
 
 + Parameters
 
-  + userid (string, required)
+  + username (string, required)
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "userid":"test_user",
       "username":"test_user",
       "school":"test_school",
       "email":"test@163.com",
@@ -121,7 +142,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to get user information",
+      "message": "get user message fail",
       "data": {
         "error":"error_message"
       }
@@ -138,7 +159,7 @@ FORMAT: 1A
 
     {
       "planname":"test_plan",
-      "runtime":"2017-12-27 10:00",
+      "runtime":"2017-12-27 10:00:00",
       "partner":["test_partner1", "test_partner2", "test_partner3"],
       "place":"tset_place"
     }
@@ -148,8 +169,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message":"create plan success",
-      "planid":"1"
+      "message":"create plan success"
     }
 
 + Response 400 (application/json)
@@ -157,7 +177,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to create plan",
+      "message": "create plan fail",
       "data": {
         "error":"error_message"
       }
@@ -169,7 +189,8 @@ FORMAT: 1A
 
   + Body
     {
-       "1":{
+      [
+        {
           "planid":"1",
           "planname":"test_plan1",
           "author":"test_author1",
@@ -177,15 +198,15 @@ FORMAT: 1A
           "partner":["test_partner1", "test_partner2", "test_partner3"],
           "place":"tset_place1"
         },
-        "3":{
-          "planid":"3",
+        {
+          "planid":"2",
           "planname":"test_plan1",
           "author":"test_author1",
           "runtime":"2017-12-27 10:00:00",
-          "addtime":"2017-12-26 10:00:00",
           "partner":["test_partner1", "test_partner2", "test_partner3"],
           "place":"tset_place1"
         }
+      ]
     }
 
 + Response 401 (application/json)
@@ -193,21 +214,13 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to get all plans",
+      "message": "get all plans fail",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Plan [DELETE /api/runner/plan]
-
-+ Request (application/json)
-
-  + Body
-
-    {
-      "planid":"1"
-    }
+### Delete Plan [DELETE /api/runner/plans/{planname}]
 
 + Response 200 (application/json)
 
@@ -218,7 +231,7 @@ FORMAT: 1A
     + Body
 
       {
-        "message":"Delete plan successfully"
+        "message":"delete plan success"
       }
 
 + Response 400 (application/json)
@@ -226,40 +239,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to delete plan",
-      "data": {
-        "error":"error_message"
-      }
-    }
-
-### UPDATE Plan [PUT /api/runner/plan]
-
-+ Request (application/json)
-
-  + Body
-
-    {
-      "planid":"1",
-      "planname":"test_plan",
-      "runtime":"2017-12-27 10:00:00",
-      "partner":["test_partner1", "test_partner2", "test_partner3"],
-      "place":"tset_place"
-    }
-
-+ Response 200 (application/json)
-
-  + Body
-
-    {
-      "message":"Update plan successfully"
-    }
-
-+ Response 400 (application/json)
-
-  + Body
-
-    {
-      "message": "Failed to update plan",
+      "message": "create plan fail",
       "data": {
         "error":"error_message"
       }
@@ -268,7 +248,7 @@ FORMAT: 1A
 
 ## Group Music List
 
-### Create Music [POST /api/runner/music]
+### Insert Music [POST /api/runner/music]
 
 + Request (application/json)
 
@@ -283,8 +263,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message":"Create music list successfully",
-      "musicid":"1"
+      "message":"insert music success"
     }
 
 + Response 400 (application/json)
@@ -292,29 +271,20 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to create music list",
+      "message": "insert music fail",
       "data": {
         "error":"error_message"
       }
     }
 
-### Update Music [PUT /api/runner/music]
-
-+ Request (application/json)
-
-  + Body
-
-    {
-      "musicid":"1",
-      "musicname":["test_music1", "test_music2"]
-    }
+### Delete Music [DELETE /api/runner/music/{musicname}]
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "message":"Update music list successfully"
+      "message": "delete music success"
     }
 
 + Response 400 (application/json)
@@ -322,36 +292,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to update music list",
-      "data": {
-        "error":"error_message"
-      }
-    }
-
-### Delete Music [DELETE /api/runner/music]
-
-+ Request (application/json)
-
-  + Body
-
-    {
-      "musicid":"1"
-    }
-
-+ Response 200 (application/json)
-
-  + Body
-
-    {
-      "message": "Delete music list successfully"
-    }
-
-+ Response 400 (application/json)
-
-  + Body
-
-    {
-      "message": "Failed to get music list",
+      "message": "delete music fail",
       "data": {
         "error":"error_message"
       }
@@ -364,17 +305,22 @@ FORMAT: 1A
   + Body
 
     {
-      "1":  {
+      [
+        {
           "musicid":"1",
-          "musicname":["test_music1"]
+          "musicname":"test_music1"
         }
+        { "musicid":"2",
+          "musicname":"test_music2"
+        }
+      ]
     }
 
 + Response 400 (application/json)
 
   + Body
     {
-      "message": "Failed to get music list",
+      "message": "get all musics fail",
       "data": {
         "error":"error_message"
       }
@@ -398,8 +344,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message":"Create article successfully",
-      "articleid":"1"
+      "message":"create article success"
     }
 
 + Response 400 (application/json)
@@ -407,28 +352,20 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to create article",
+      "message": "create article fail",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Article [DELETE /api/runner/article]
-
-+ Request (application/json)
-
-  + Body
-
-    {
-      "articleid":"1"
-    }
+### Delete Article [DELETE /api/runner/article/{title}]
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "message":"Create article successfully"
+      "message":"delete article success"
     }
 
 + Response 400 (application/json)
@@ -436,7 +373,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to delete music list",
+      "message": "delete article fail",
       "data": {
         "error":"error_message"
       }
@@ -449,21 +386,20 @@ FORMAT: 1A
   + Body
 
   {
-    
-     "1": {
+    [
+      {
         "articleid":"1",
         "title":"test_title1",
-        "author":"test_author",
-        "content":"test_cotent",
-        "addtime":"2017-12-27 13:00"
+        "author":"test_content1",
+        "create_time":"2017-12-27 13:00:00"
       },
-      "3":{
-        "articleid":"3",
-        "author":"test_author",
-        "content":"test_cotent",
-        "addtime":"2017-12-27 13:00"
+      {
+        "articleid":"2",
+        "title":"test_title2",
+        "author":"test_content2",
+        "create_time":"2017-12-27 13:00:00"
       }
-    
+    ]
   }
 
 + Response 401 (application/json)
@@ -471,7 +407,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to get all artciles",
+      "message": "get all articles fail",
       "data": {
         "error":"error_message"
       }
@@ -486,7 +422,7 @@ FORMAT: 1A
   + Body
 
     {
-      "articleid":"1",
+      "title":"comment_article",
       "content":"comment_content"
     }
 
@@ -495,7 +431,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message":"Create comment successfully"
+      "message":"create comment success"
     }
 
 + Response 400 (application/json)
@@ -503,29 +439,20 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to create comment",
+      "message": "create comment fail",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Comment [DELETE /api/runner/comment]
-
-+ Request (application/json)
-
-  + Body
-
-    {
-      "articleid":"1",
-      "commentid":"1"
-    }
+### Delete Comment [DELETE /api/runner/comment/{commentid}]
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "message":"Delete comment successfully"
+      "message":"delete comment success"
     }
 
 + Response 400 (application/json)
@@ -533,7 +460,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to delete comment",
+      "message": "delete article fail",
       "data": {
         "error":"error_message"
       }
@@ -546,20 +473,20 @@ FORMAT: 1A
   + Body
 
   {
-     "1": {
+    [
+      {
         "commentid":"1",
-        "articleid":"test_title1",
+        "title":"test_title1",
         "author":"test_content1",
-        "content":"test_content",
-        "addtime":"2017-12-27 13:00:00"
+        "create_time":"2017-12-27 13:00:00"
       },
-      "2":{
+      {
         "commentid":"2",
-        "articleid":"test_title1",
+        "title":"test_title1",
         "author":"test_content1",
-        "content":"test_content",
-        "addtime":"2017-12-27 13:00:00"
+        "create_time":"2017-12-27 13:00:00"
       }
+    ]
   }
 
 + Response 401 (application/json)
@@ -567,7 +494,7 @@ FORMAT: 1A
   + Body
 
     {
-      "message": "Failed to get all comments",
+      "message": "get all articles fail",
       "data": {
         "error":"error_message"
       }
