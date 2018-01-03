@@ -9,21 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".LoginActivity"
             android:noHistory="true">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".UniversalActivity">
-        </activity>
-        <activity android:name=".RunPlan.RunPlanActivity"> </activity>
-        <activity android:name=".RunMusic.RunMusicActivity"> </activity>
+        <activity android:name=".UniversalActivity"></activity>
+        <activity android:name=".RunPlan.RunPlanActivity"></activity>
+        <activity android:name=".RunMusic.RunMusicActivity"></activity>
 
+        <service
+            android:name=".RunMusic.MusicService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>
