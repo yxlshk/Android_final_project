@@ -15,6 +15,7 @@ import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.example.a77354.android_final_project.PartnerAsking.PartnerAskingActivity;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
     private LocationClient mLocClient;
-    public MyLocationListenner myListener = new MyLocationListenner();
+    public MyLocationListenner myListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             initView();//init为定位方法
         }
+
+        initRunButton();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final DrawerArrowDrawable indicator = new DrawerArrowDrawable(this);
@@ -104,6 +108,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void initRunButton() {
+        Button run = (Button) findViewById(R.id.run);
+        run.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
     private void initView() {
         mMapView = (MapView) findViewById(R.id.bmapView); //找到我们的地图控件
         mBaiduMap = mMapView.getMap(); //获得地图
@@ -111,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true); // 开启定位图层
 
         mLocClient = new LocationClient(getApplicationContext());  //定位用到的一个类
+        myListener = new MyLocationListenner();
         mLocClient.registerLocationListener(myListener); //注册监听
 
         ///LocationClientOption类用来设置定位SDK的定位方式，
