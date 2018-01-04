@@ -29,6 +29,25 @@
         <activity android:name=".PartnerAsking.PartnerAskingActivity"> </activity>
         <activity android:name=".PartnerAsking.NewAskingActivity"> </activity>
         <activity android:name=".Trajectory.TrajectoryActivity"> </activity>
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="vz3NEizCE8mojpzyxi8sOUYqnpYm4zfb"></meta-data>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
     </application>
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>
