@@ -28,6 +28,7 @@
         <activity android:name=".RunPlan.AddNewPlanActivity"> </activity>
         <activity android:name=".PartnerAsking.PartnerAskingActivity"> </activity>
         <activity android:name=".PartnerAsking.NewAskingActivity"> </activity>
+        <activity android:name=".Trajectory.TrajectoryActivity"> </activity>
     </application>
 
 </manifest>
