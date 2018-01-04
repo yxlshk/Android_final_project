@@ -63,7 +63,7 @@ String （又是忘了什么类型） 歌曲Source
 
 ### 7、同校约跑界面说明
 
-每一个帖子所需的数据有：
+1. 每一个帖子所需的数据有：
 
 - 发布者的头像
 - 发布者的昵称
@@ -71,4 +71,35 @@ String （又是忘了什么类型） 歌曲Source
 - 发布的时间
 - 点“约”者
 
-同样的，同校约跑的RecyclerView中的数据类型应该另外写一个class类出来，如：class post,我为了方便，临时在同校约跑activity中写了一个class temp，如果写了正式的class，这个可以注释掉  
+2. 同样的，同校约跑的RecyclerView中的数据类型应该另外写一个class类出来，如：class post,我为了方便，临时在同校约跑activity中写了一个class temp，如果写了正式的class，这个可以注释掉  
+3. 点“约”效果是模拟微信朋友圈的点赞效果，如果有人点击，就会出现一个❤心形图标并且出现点约人的昵称，我xml里面是用`android:visibility="gone"`默认那个模块消失的，那一块的整个代码是这样：
+
+```Xml
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="4dp"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
+    android:layout_marginBottom="7dp"
+    android:background="@color/light_grey"
+    android:visibility="gone"
+    android:id="@+id/partner_list_area">
+  <ImageView
+    android:layout_width="15dp"
+    android:layout_height="15dp"
+    android:layout_marginRight="5dp"
+    android:src="@drawable/yue_icon"/>
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="14sp"
+    android:text=""
+    android:id="@+id/partner_list"
+    android:textColor="@color/themeBule"/>
+</LinearLayout>
+```
+
+如果有点约者直接让最外面那个LinearLayout的visibility为visible就行，然后把点约者的昵称加入下面的TextView
