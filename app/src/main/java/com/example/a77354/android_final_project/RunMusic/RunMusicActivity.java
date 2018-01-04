@@ -25,7 +25,7 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
  * Created by shujunhuai on 2017/12/26.
  */
 
-public class RunMusicActivity  extends AppCompatActivity implements SwipeBackActivityBase {
+public class RunMusicActivity extends AppCompatActivity implements SwipeBackActivityBase {
     class temp {
         private String musicName;
         private String singer;
