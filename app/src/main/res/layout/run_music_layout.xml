@@ -35,7 +35,7 @@
             app:elevation="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginBottom="60dp"
-            />
+            android:id="@+id/refresh_song_btn" />
     </FrameLayout>
 
     <!-- SLIDING LAYOUT -->

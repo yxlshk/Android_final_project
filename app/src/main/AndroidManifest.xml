@@ -26,6 +26,8 @@
         <activity android:name=".LoginAndRegister.RegisterActivity"> </activity>
         <activity android:name=".PersonalActivity"> </activity>
         <activity android:name=".RunPlan.AddNewPlanActivity"> </activity>
+        <activity android:name=".PartnerAsking.PartnerAskingActivity"> </activity>
+        <activity android:name=".PartnerAsking.NewAskingActivity"> </activity>
     </application>
 
 </manifest>

@@ -177,7 +177,7 @@
     <Button
         android:layout_width="0dp"
         android:layout_height="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/cancel_change"
+        app:layout_constraintTop_toBottomOf="@id/school_change"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/confirm_change"
@@ -185,12 +185,13 @@
         android:layout_margin="10dp"
         android:text="确定"
         android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:alpha="0.8" />
 
     <Button
         android:layout_width="0dp"
         android:layout_height="35dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/confirm_change"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/cancel_change"
@@ -198,6 +199,20 @@
         android:background="@drawable/sign_up_button_shape"
         android:layout_margin="10dp"
         android:textColor="@color/white"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:alpha="0.8"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/logout"
+        android:text="退出登录"
+        android:background="@drawable/sign_up_button_shape"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        android:alpha="0.8"/>
 
 </android.support.constraint.ConstraintLayout>

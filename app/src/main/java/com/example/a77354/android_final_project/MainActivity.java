@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.a77354.android_final_project.PartnerAsking.PartnerAskingActivity;
 import com.example.a77354.android_final_project.RunMusic.RunMusicActivity;
 import com.example.a77354.android_final_project.RunPlan.RunPlanActivity;
 import com.github.mzule.fantasyslide.SideBar;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, RunPlanActivity.class));
             } else if (title.equals("跑步歌单")) {
                 startActivity(new Intent(this, RunMusicActivity.class));
+            } else if (title.equals("同校约跑")) {
+                startActivity(new Intent(this, PartnerAskingActivity.class));
             } else {
                 startActivity(UniversalActivity.newIntent(this, title));
             }

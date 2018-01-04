@@ -1,7 +1,9 @@
-package com.example.a77354.android_final_project.RunMusic;
+package com.example.a77354.android_final_project.PartnerAsking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.a77354.android_final_project.R;
@@ -22,61 +25,70 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 
 /**
- * Created by shujunhuai on 2017/12/26.
+ * Created by shujunhuai on 2018/1/4.
  */
 
-public class RunMusicActivity extends AppCompatActivity implements SwipeBackActivityBase {
+public class PartnerAskingActivity extends AppCompatActivity implements SwipeBackActivityBase {
     class temp {
-        private String musicName;
-        private String singer;
-        public temp(String name, String singer) {
-            this.musicName = name;
-            this.singer = singer;
+        private String publisher;
+        private String content;
+        private String publishTime;
+        //还有两个变量，一个是发布者的头像、一个是有记得人点"约"，即点"约"列表
+        public temp(String publisher, String content, String publishTime) {
+            this.publisher = publisher;
+            this.content = content;
+            this.publishTime = publishTime;
         }
 
-        public String getMusicName() {
-            return musicName;
+        public String getContent() {
+            return content;
         }
 
-        public String getSinger() {
-            return singer;
+        public String getPublisher() {
+            return publisher;
+        }
+
+        public String getPublishTime() {
+            return publishTime;
         }
     }
 
     private SwipeBackActivityHelper swipeBackActivityHelper;
-    private List<temp> dataList = new ArrayList<>();
+    private List<PartnerAskingActivity.temp> dataList = new ArrayList<>();
     private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.run_music_layout);
+        setContentView(R.layout.partner_asking_layout);
 
         //顶部返回键的配置
         swipeBackActivityHelper = new SwipeBackActivityHelper(this);
         swipeBackActivityHelper.onActivityCreate();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("跑步歌单");
+        setTitle("同校约跑");
 
         //recyclerView伪数据填充
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.music_recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.partner_asking_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = getAdapter();
         recyclerView.setAdapter(adapter);
         prepareDataList();
         adapter.notifyDataSetChanged();
+
+        //点击编辑一条新的帖子
+        FloatingActionButton addNewAskingBtn = (FloatingActionButton) findViewById(R.id.add_new_asking);
+        addNewAskingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(PartnerAskingActivity.this, NewAskingActivity.class));
+            }
+        });
     }
 
     private void prepareDataList() {
         for (int i = 0; i < 5; i++) {
-            dataList.add(new temp("我的宣言", "周柏豪"));
-            dataList.add(new temp("斩立决", "周柏豪"));
-            dataList.add(new temp("杰出青年", "周柏豪"));
-            dataList.add(new temp("天光", "周柏豪"));
-            dataList.add(new temp("传闻", "周柏豪"));
-            dataList.add(new temp("够钟", "周柏豪"));
-            dataList.add(new temp("近在千里", "周柏豪"));
-            dataList.add(new temp("有生一天", "周柏豪"));
+            dataList.add(new PartnerAskingActivity.temp("shujh", "寻找本周五晚上的跑步小伙伴～","1月3日，18：00"));
         }
     }
 
@@ -85,13 +97,13 @@ public class RunMusicActivity extends AppCompatActivity implements SwipeBackActi
         RecyclerView.Adapter adapter = new RecyclerView.Adapter() {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = inflater.inflate(R.layout.run_music_recycler_item, parent, false);
-                return new MyViewHolder(view);
+                View view = inflater.inflate(R.layout.partner_asking_item_layout, parent, false);
+                return new PartnerAskingActivity.MyViewHolder(view);
             }
 
             @Override
             public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-                MyViewHolder myHolder = (MyViewHolder) holder;
+                PartnerAskingActivity.MyViewHolder myHolder = (PartnerAskingActivity.MyViewHolder) holder;
                 myHolder.bindData(dataList.get(position));
             }
 
@@ -105,18 +117,21 @@ public class RunMusicActivity extends AppCompatActivity implements SwipeBackActi
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView musicName;
-        TextView singer;
+        TextView publisher;
+        TextView content;
+        TextView publishTime;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            this.musicName = (TextView) itemView.findViewById(R.id.musicName);
-            this.singer = (TextView) itemView.findViewById(R.id.singer);
+            this.publisher = (TextView) itemView.findViewById(R.id.publisher_nickname);
+            this.content = (TextView) itemView.findViewById(R.id.publish_content);
+            this.publishTime = (TextView) itemView.findViewById(R.id.publish_time);
         }
 
-        public void bindData(temp temp) {
-            musicName.setText(temp.getMusicName());
-            singer.setText(temp.getSinger());
+        public void bindData(PartnerAskingActivity.temp temp) {
+            publisher.setText(temp.getPublisher());
+            content.setText(temp.getContent());
+            publishTime.setText(temp.getPublishTime());
         }
     }
 
