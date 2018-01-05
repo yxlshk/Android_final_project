@@ -1,31 +1,9 @@
 FORMAT: 1A
-HOST:http://112.124.47.197:4000/
+HOST: http://112.124.47.197:4000/
 
 # Runner API
 
 ## Group User
-
-### Is Logged In [GET /api/runner/user/login{?loginid}]
-
-+ Parameters
-
-  + loginid (string, required)
-
-+ Response 200 (application/json)
-
-  + Body
-
-    {
-      "username": "test"
-    }
-
-+ Response 401 (application/json)
-
-  + Body
-
-    {
-      "message":"no login"
-    }
 
 ### Login [POST /api/runner/user/login]
 
@@ -34,7 +12,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "username": "test",
+      "userid": "test123",
       "password": "12345678"
     }
 
@@ -43,7 +21,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message":"login success"
+      "message":"Login successful"
     }
 
 + Response 400 (application/json)
@@ -51,7 +29,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "login fail",
+      "message": "Fail to login",
       "data": {
         "error":"error_message"
       }
@@ -63,12 +41,12 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
+      "userid":"test123",
       "username":"test",
       "password":"12345678",
       "school":"test_school",
       "email":"test@163.com",
-      "phone":"12345679101",
-      "head_img":"test_path"
+      "phone":"12345679101"
     }
 
 + Response 200 (application/json)
@@ -80,7 +58,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message":"register success"
+      "message":"Registered successfully"
     }
 
 + Response 400 (application/json)
@@ -88,7 +66,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "register fail",
+      "message": "Fail to register",
       "data": {
         "error":"error_message"
       }
@@ -107,7 +85,7 @@ HOST:http://112.124.47.197:4000/
       + Body
 
         {
-          "message":"logout success"
+          "message":"Logout successful"
         }
 
 + Response 400 (application/json)
@@ -115,23 +93,24 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "logout fail",
+      "message": "Failed to logout",
       "data": {
         "error":"error_message"
       }
     }
 
-### Get User Message [GET /api/runner/user{?username}]
+### Get User Message [GET /api/runner/user{?userid}]
 
 + Parameters
 
-  + username (string, required)
+  + userid (string, required)
 
 + Response 200 (application/json)
 
   + Body
 
     {
+      "userid":"test_user",
       "username":"test_user",
       "school":"test_school",
       "email":"test@163.com",
@@ -143,7 +122,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "get user message fail",
+      "message": "Failed to get user information",
       "data": {
         "error":"error_message"
       }
@@ -160,7 +139,7 @@ HOST:http://112.124.47.197:4000/
 
     {
       "planname":"test_plan",
-      "runtime":"2017-12-27 10:00:00",
+      "runtime":"2017-12-27 10:00",
       "partner":["test_partner1", "test_partner2", "test_partner3"],
       "place":"tset_place"
     }
@@ -170,7 +149,8 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message":"create plan success"
+      "message":"create plan success",
+      "planid":"1"
     }
 
 + Response 400 (application/json)
@@ -178,7 +158,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "create plan fail",
+      "message": "Failed to create plan",
       "data": {
         "error":"error_message"
       }
@@ -190,8 +170,7 @@ HOST:http://112.124.47.197:4000/
 
   + Body
     {
-      [
-        {
+       "1":{
           "planid":"1",
           "planname":"test_plan1",
           "author":"test_author1",
@@ -199,15 +178,15 @@ HOST:http://112.124.47.197:4000/
           "partner":["test_partner1", "test_partner2", "test_partner3"],
           "place":"tset_place1"
         },
-        {
-          "planid":"2",
+        "3":{
+          "planid":"3",
           "planname":"test_plan1",
           "author":"test_author1",
           "runtime":"2017-12-27 10:00:00",
+          "addtime":"2017-12-26 10:00:00",
           "partner":["test_partner1", "test_partner2", "test_partner3"],
           "place":"tset_place1"
         }
-      ]
     }
 
 + Response 401 (application/json)
@@ -215,13 +194,21 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "get all plans fail",
+      "message": "Failed to get all plans",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Plan [DELETE /api/runner/plans/{planname}]
+### Delete Plan [DELETE /api/runner/plan]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "planid":"1"
+    }
 
 + Response 200 (application/json)
 
@@ -232,7 +219,7 @@ HOST:http://112.124.47.197:4000/
     + Body
 
       {
-        "message":"delete plan success"
+        "message":"Delete plan successfully"
       }
 
 + Response 400 (application/json)
@@ -240,7 +227,40 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "create plan fail",
+      "message": "Failed to delete plan",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### UPDATE Plan [PUT /api/runner/plan]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "planid":"1",
+      "planname":"test_plan",
+      "runtime":"2017-12-27 10:00:00",
+      "partner":["test_partner1", "test_partner2", "test_partner3"],
+      "place":"tset_place"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"Update plan successfully"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "Failed to update plan",
       "data": {
         "error":"error_message"
       }
@@ -249,7 +269,7 @@ HOST:http://112.124.47.197:4000/
 
 ## Group Music List
 
-### Insert Music [POST /api/runner/music]
+### Create Music [POST /api/runner/music]
 
 + Request (application/json)
 
@@ -264,7 +284,8 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message":"insert music success"
+      "message":"Create music list successfully",
+      "musicid":"1"
     }
 
 + Response 400 (application/json)
@@ -272,20 +293,29 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "insert music fail",
+      "message": "Failed to create music list",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Music [DELETE /api/runner/music/{musicname}]
+### Update Music [PUT /api/runner/music]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "musicid":"1",
+      "musicname":["test_music1", "test_music2"]
+    }
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "message": "delete music success"
+      "message":"Update music list successfully"
     }
 
 + Response 400 (application/json)
@@ -293,7 +323,36 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "delete music fail",
+      "message": "Failed to update music list",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
+### Delete Music [DELETE /api/runner/music]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "musicid":"1"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message": "Delete music list successfully"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "Failed to get music list",
       "data": {
         "error":"error_message"
       }
@@ -306,22 +365,17 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      [
-        {
+      "1":  {
           "musicid":"1",
-          "musicname":"test_music1"
+          "musicname":["test_music1"]
         }
-        { "musicid":"2",
-          "musicname":"test_music2"
-        }
-      ]
     }
 
 + Response 400 (application/json)
 
   + Body
     {
-      "message": "get all musics fail",
+      "message": "Failed to get music list",
       "data": {
         "error":"error_message"
       }
@@ -345,7 +399,8 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message":"create article success"
+      "message":"Create article successfully",
+      "articleid":"1"
     }
 
 + Response 400 (application/json)
@@ -353,20 +408,28 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "create article fail",
+      "message": "Failed to create article",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Article [DELETE /api/runner/article/{title}]
+### Delete Article [DELETE /api/runner/article]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "articleid":"1"
+    }
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "message":"delete article success"
+      "message":"Create article successfully"
     }
 
 + Response 400 (application/json)
@@ -374,7 +437,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "delete article fail",
+      "message": "Failed to delete music list",
       "data": {
         "error":"error_message"
       }
@@ -387,20 +450,21 @@ HOST:http://112.124.47.197:4000/
   + Body
 
   {
-    [
-      {
+    
+     "1": {
         "articleid":"1",
         "title":"test_title1",
-        "author":"test_content1",
-        "create_time":"2017-12-27 13:00:00"
+        "author":"test_author",
+        "content":"test_cotent",
+        "addtime":"2017-12-27 13:00"
       },
-      {
-        "articleid":"2",
-        "title":"test_title2",
-        "author":"test_content2",
-        "create_time":"2017-12-27 13:00:00"
+      "3":{
+        "articleid":"3",
+        "author":"test_author",
+        "content":"test_cotent",
+        "addtime":"2017-12-27 13:00"
       }
-    ]
+    
   }
 
 + Response 401 (application/json)
@@ -408,7 +472,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "get all articles fail",
+      "message": "Failed to get all artciles",
       "data": {
         "error":"error_message"
       }
@@ -423,7 +487,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "title":"comment_article",
+      "articleid":"1",
       "content":"comment_content"
     }
 
@@ -432,7 +496,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message":"create comment success"
+      "message":"Create comment successfully"
     }
 
 + Response 400 (application/json)
@@ -440,20 +504,29 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "create comment fail",
+      "message": "Failed to create comment",
       "data": {
         "error":"error_message"
       }
     }
 
-### Delete Comment [DELETE /api/runner/comment/{commentid}]
+### Delete Comment [DELETE /api/runner/comment]
+
++ Request (application/json)
+
+  + Body
+
+    {
+      "articleid":"1",
+      "commentid":"1"
+    }
 
 + Response 200 (application/json)
 
   + Body
 
     {
-      "message":"delete comment success"
+      "message":"Delete comment successfully"
     }
 
 + Response 400 (application/json)
@@ -461,7 +534,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "delete article fail",
+      "message": "Failed to delete comment",
       "data": {
         "error":"error_message"
       }
@@ -474,20 +547,20 @@ HOST:http://112.124.47.197:4000/
   + Body
 
   {
-    [
-      {
+     "1": {
         "commentid":"1",
-        "title":"test_title1",
+        "articleid":"test_title1",
         "author":"test_content1",
-        "create_time":"2017-12-27 13:00:00"
+        "content":"test_content",
+        "addtime":"2017-12-27 13:00:00"
       },
-      {
+      "2":{
         "commentid":"2",
-        "title":"test_title1",
+        "articleid":"test_title1",
         "author":"test_content1",
-        "create_time":"2017-12-27 13:00:00"
+        "content":"test_content",
+        "addtime":"2017-12-27 13:00:00"
       }
-    ]
   }
 
 + Response 401 (application/json)
@@ -495,7 +568,7 @@ HOST:http://112.124.47.197:4000/
   + Body
 
     {
-      "message": "get all articles fail",
+      "message": "Failed to get all comments",
       "data": {
         "error":"error_message"
       }
