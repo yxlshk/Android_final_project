@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.a77354.android_final_project.HttpServiceInterface.GetPersonalInfoService;
 import com.example.a77354.android_final_project.HttpServiceInterface.LoginServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.LogoutServiceInterface;
 import com.example.a77354.android_final_project.LoginAndRegister.LoginActivity;
 import com.example.a77354.android_final_project.MyResponseBody.UserInfo;
 import com.example.a77354.android_final_project.RequestBodyStruct.RegisterBody;
@@ -44,9 +45,10 @@ public class PersonalActivity extends AppCompatActivity  implements SwipeBackAct
     private EditText email_change;
     private EditText school_change;
 
+
     private Button confirm_change;
     private Button cancel_change;
-
+    private Button logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,7 @@ public class PersonalActivity extends AppCompatActivity  implements SwipeBackAct
         phone_change = (EditText) findViewById(R.id.phone_change);
         email_change = (EditText) findViewById(R.id.email_change);
         school_change = (EditText) findViewById(R.id.school_change);
+        logout = (Button) findViewById(R.id.logout);
     }
 
     private void initPersonalInfomation() {
@@ -123,7 +126,6 @@ public class PersonalActivity extends AppCompatActivity  implements SwipeBackAct
 
                     @Override
                     public void onError(Throwable e) {
-//                        Toast.makeText(PersonalActivity.this, e.hashCode() + "获取信息失败", Toast.LENGTH_SHORT).show();
                         Log.e("test", "a" + e.getMessage());
                     }
                     @Override
@@ -177,6 +179,39 @@ public class PersonalActivity extends AppCompatActivity  implements SwipeBackAct
                 email_change.setEnabled(false);
                 school_change.setEnabled(false);
                 cur_nickname.setText(nickname_change.getText().toString());
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
+                LogoutServiceInterface service = retrofit.create(LogoutServiceInterface.class);
+                service.logout()
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<ResponseBody>(){
+                            @Override
+                            public final void onCompleted() {
+                                Log.e("test", "退出成功");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("test", "a" + e.getMessage());
+                            }
+                            @Override
+                            public void onNext(ResponseBody ResponseBody) {
+                                Log.e("test", ResponseBody.getMessage());
+                                Toast.makeText(getApplicationContext(), ResponseBody.getMessage(), Toast.LENGTH_SHORT).show();
+                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("cookie", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("cookie", "");
+                                editor.commit();
+                            //    System.exit(-1);
+                            }
+                        });
             }
         });
     }

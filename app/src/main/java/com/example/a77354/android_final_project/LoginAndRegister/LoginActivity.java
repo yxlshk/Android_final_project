@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText username = (EditText) findViewById(R.id.userId);
         final EditText password = (EditText) findViewById(R.id.password);
         Button signin = (Button) findViewById(R.id.sign_in);
+        checkIfHasLogin();
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,5 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+    }
+
+    private void checkIfHasLogin() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("cookie", Context.MODE_PRIVATE);
+
     }
 }
