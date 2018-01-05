@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -61,9 +65,15 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
     private IBinder mBinder;
     private ImageButton playAndPause;
     private ImageButton buttomPlayAndPause;
+    private ImageButton topNextButton;
+    private ImageButton BottomNextButton;
+    private ImageButton preButton;
+    private ImageView Album;
+    private ImageView songImage;
     private android.support.v7.widget.AppCompatSeekBar seekbar;
     private TextView curTime;
     private TextView totalTime;
+    private int currentSong;
     private static boolean hasPermission;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -237,6 +247,12 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
         seekbar = (android.support.v7.widget.AppCompatSeekBar)findViewById(R.id.seekBar);
         curTime = (TextView)findViewById(R.id.leftTime);
         totalTime = (TextView)findViewById(R.id.rightTime);
+        topNextButton = (ImageButton) findViewById(R.id.nextOne);
+        BottomNextButton = (ImageButton) findViewById(R.id.skip_next);
+        preButton = (ImageButton) findViewById(R.id.skip_pre);
+        Album = (ImageView) findViewById(R.id.Album);
+        songImage = (ImageView)findViewById(R.id.songImage);
+        currentSong = -1;
     }
     private void initRecycleView() {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.music_recycler_view);
@@ -326,32 +342,35 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
             }
         });
 
+        topNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentSong = (currentSong + 1) % dataList.size();
+                playMusic(currentSong);
+            }
+        });
+
+        BottomNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentSong = (currentSong + 1) % dataList.size();
+                playMusic(currentSong);
+            }
+        });
+
+        preButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentSong = (currentSong - 1) % dataList.size();
+                playMusic(currentSong);
+            }
+        });
+
         songAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getApplicationContext(),"click", Toast.LENGTH_SHORT).show();
-                TextView bottomSongName = (TextView) findViewById(R.id.bottomSongName);
-                TextView bottomSingerName = (TextView) findViewById(R.id.bottomSinger);
-                TextView SongName = (TextView) findViewById(R.id.songName);
-                TextView singerName = (TextView) findViewById(R.id.singerName);
-                bottomSongName.setText(dataList.get(position).getMusicName());
-                SongName.setText(dataList.get(position).getMusicName());
-                bottomSingerName.setText(dataList.get(position).getMusicArtist());
-                singerName.setText(dataList.get(position).getMusicArtist());
-                playAndPause.setImageResource(R.drawable.play);
-                buttomPlayAndPause.setImageResource(R.drawable.play2);
-                playAndPause.setTag("1");
-                buttomPlayAndPause.setTag("1");
-                try{
-                    int code = 102;                             //更换歌曲
-                    Parcel data =Parcel.obtain();
-                    data.writeString(dataList.get(position).getMusicPath());
-                    Parcel reply = Parcel.obtain();
-                    mBinder.transact(code, data, reply, 0);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-
+                currentSong = position;
+                playMusic(position);
             }
         });
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -420,6 +439,9 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
                 // 歌曲文件的大小 ：MediaStore.Audio.Media.SIZE
                 Long size = cursor.getLong(cursor
                         .getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE));
+                //封面ID
+                int albumId = cursor.getInt(cursor
+                        .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
 
                 if (size > 1024 * 800) {// 大于800K的音乐文件
                     info = new MusicInfo();
@@ -428,6 +450,7 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
                     info.setMusicArtist(musicArtist);
                     info.setMusicPath(musicPath);
                     info.setMusicLong(musicTime);
+                    info.setAlbumId(albumId);
                     mylist.add(info);
                 }
                 cursor.moveToNext();//游标移动到下一行
@@ -435,5 +458,62 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
         }
         cursor.close();
         return mylist;
+    }
+
+    private String getAlbumArt(int album_id)
+    {
+        String mUriAlbums = "content://media/external/audio/albums";
+        String[] projection = new String[] { "album_art" };
+        Cursor cur = this.getContentResolver().query(  Uri.parse(mUriAlbums + "/" + Integer.toString(album_id)),  projection, null, null, null);
+        String album_art = null;
+        if (cur.getCount() > 0 && cur.getColumnCount() > 0)
+        {  cur.moveToNext();
+            album_art = cur.getString(0);
+        }
+        cur.close();
+        cur = null;
+        return album_art;
+    }
+
+    private void playMusic(int position) {
+        Toast.makeText(getApplicationContext(),"click", Toast.LENGTH_SHORT).show();
+        TextView bottomSongName = (TextView) findViewById(R.id.bottomSongName);
+        TextView bottomSingerName = (TextView) findViewById(R.id.bottomSinger);
+        TextView SongName = (TextView) findViewById(R.id.songName);
+        TextView singerName = (TextView) findViewById(R.id.singerName);
+        bottomSongName.setText(dataList.get(position).getMusicName());
+        SongName.setText(dataList.get(position).getMusicName());
+        bottomSingerName.setText(dataList.get(position).getMusicArtist());
+        singerName.setText(dataList.get(position).getMusicArtist());
+        playAndPause.setImageResource(R.drawable.play);
+        buttomPlayAndPause.setImageResource(R.drawable.play2);
+        playAndPause.setTag("1");
+        buttomPlayAndPause.setTag("1");
+        try{
+            int code = 102;                             //更换歌曲
+            Parcel data =Parcel.obtain();
+            data.writeString(dataList.get(position).getMusicPath());
+            Parcel reply = Parcel.obtain();
+            mBinder.transact(code, data, reply, 0);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        String albumArt = getAlbumArt(dataList.get(position).getAlbumId());
+        Bitmap bm = null;
+     //   Log.d("test",albumArt );
+        if (albumArt == null)
+        {
+            Album.setImageResource(R.drawable.me);
+            songImage.setImageResource(R.drawable.me);
+        }
+        else
+        {
+            Log.e("test",albumArt );
+            bm = BitmapFactory.decodeFile(albumArt);
+            BitmapDrawable bmpDraw = new BitmapDrawable(bm);
+            Album.setImageDrawable(bmpDraw);
+            songImage.setImageDrawable(bmpDraw);
+        }
     }
 }

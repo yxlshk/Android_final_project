@@ -21,6 +21,8 @@ public class MusicInfo {
     /** 歌曲时间长度 */
     private int musicLong;
 
+    /** 歌曲封面 */
+    private int albumId;
 
 
 
@@ -83,5 +85,12 @@ public class MusicInfo {
         this.musicLong = misicLong;
     }
 
+    public int getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(int musicId) {
+        this.albumId = musicId;
+    }
 
 }
