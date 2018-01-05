@@ -24,7 +24,7 @@ class ArticleControler:
     @csrf_exempt
     def createArticleControler(self, request):
         if request.method == 'POST':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATEARTICLE
@@ -52,7 +52,7 @@ class ArticleControler:
     @csrf_exempt
     def deleteArticleControler(self, request):
         if request.method == 'DELETE':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETEARTICLE
@@ -105,7 +105,7 @@ class ArticleControler:
     @csrf_exempt
     def getAllArticleControler(self, request):
         if request.method == 'GET':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETALLARTICLE
