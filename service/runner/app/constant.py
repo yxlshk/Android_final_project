@@ -19,6 +19,7 @@ class Constant(object):
     DELETEARTICLE = '[CREATEARTICLE]'
     CREATECOMMENT = '[CREATECOMMENT]'
     DELETECOMMENT = '[DELETECOMMENT]'
+    UPDATEUSERINFO = '[UPDATEUSERINFO]'
 
     ERROR_DATABASE = 'Database operation is abnormal'
     ERROR_REGISTER_EXISTS = 'This user id is already registered'
@@ -36,8 +37,8 @@ class Constant(object):
     ERROR_COMMENT_NOEXISTS = 'The comment does not exist'
 
     SUCCESS_REGISTER = 'Registered successfully'
-    SUCCESS_LOGIN = 'Login successful'
-    SUCCESS_LOGOUT = 'Logout successful'
+    SUCCESS_LOGIN = 'Login successfully'
+    SUCCESS_LOGOUT = 'Logout successfully'
     SUCCESS_GETUSERINFO = 'Get the user information successfully'
     SUCCESS_CREATEPLAN = 'Create plan successfully'
     SUCCESS_UPDATEPLAN = 'Update plan successfully'
@@ -54,6 +55,7 @@ class Constant(object):
     SUCCESS_CREATECOMMENT = 'Create comment successfully'
     SUCCESS_DELETECOMMENT = 'Delete comment successfully'
     SUCCESS_GETALLCOMMENTS = 'Get all comments successfully'
+    SUCCESS_UPDATEUSERINFO = 'Update the user information successfully'
 
     FAIL_REGISTER = 'Fail to register'
     FAIL_LOGIN = 'Fail to login'
@@ -74,3 +76,4 @@ class Constant(object):
     FAIL_CREATECOMMENT = 'Failed to create comment'
     FAIL_DELETECOMMENT = 'Failed to delete comment'
     FAIL_GETALLCOMMENTS = 'Failed to get all comments'
+    FAIL_UPDATEUSERINFO = 'Failed to update the user information'

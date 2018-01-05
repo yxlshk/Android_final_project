@@ -74,3 +74,17 @@ class UserService(object):
             except Exception, e:
                 return Constant.SAVESESSION + str(e)
         return Constant.ERROR_LOGIN_HASLOGIN
+
+    def updateUserInfo(self, user):
+        user_set = User.objects.filter(USER_ID=user.USER_ID)
+        if len(user_set) == 0:
+            return Constant.ERROR_LOGIN_NOEXISTS
+        try:
+            user_set[0].USER_EMAIL = user.USER_EMAIL
+            user_set[0].USER_NAME = user.USER_NAME
+            user_set[0].USER_PHONE = user.USER_PHONE
+            user_set[0].USER_SCHOOL = user.USER_SCHOOL
+            user_set[0].save()
+            return Constant.SUCCESS_UPDATEUSERINFO
+        except Exception, e:
+            return Constant.UPDATEUSERINFO + str(e)

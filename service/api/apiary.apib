@@ -127,6 +127,40 @@ HOST: http://112.124.47.197:4000/
         "error":"error_message"
       }
     }
+	
+### UPDATE User Message [PUT /api/runner/user{?userid}]
+
++ Request (application/json)
+
+  + Body
+
+    {
+	  "userid":"test_user",
+      "username":"test_user",
+      "school":"test_school",
+      "email":"test@163.com",
+      "phone":"12345679101"
+    }
+
++ Response 200 (application/json)
+
+  + Body
+
+    {
+      "message":"Update the user information successfully"
+    }
+
++ Response 400 (application/json)
+
+  + Body
+
+    {
+      "message": "Failed to update the user information",
+      "data": {
+        "error":"error_message"
+      }
+    }
+
 
 
 ## Group Plan

@@ -32,9 +32,9 @@ music_controler = MusicControler()
 
 urlpatterns = [
     url(r'^api/runner/user/register', user_controler.registerControler),
-    url(r'^api/runner/user/login', user_controler.loginControler),
+    url(r'^api/runner/user/login', user_controler.difMethodLogin),
     url(r'^api/runner/user/logout', user_controler.logoutControler),
-    url(r'^api/runner/user', user_controler.getUserMessageControler),
+    url(r'^api/runner/user', user_controler.difMethodInfo),
     url(r'^api/runner/plan', plan_controler.difMethodPlanControler),
     url(r'^api/runner/article', article_controler.difMethodArticleControler),
     url(r'^api/runner/comment', comment_controler.difMethodCommentControler),

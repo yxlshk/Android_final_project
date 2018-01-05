@@ -24,7 +24,7 @@ class MusicControler(object):
     @csrf_exempt
     def createMusicControler(self, request):
         if request.method == 'POST':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATEMUSICLIST
@@ -52,7 +52,7 @@ class MusicControler(object):
     @csrf_exempt
     def deleteMusicControler(self, request):
         if request.method == 'DELETE':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETEMUSICLIST
@@ -78,7 +78,7 @@ class MusicControler(object):
     @csrf_exempt
     def updateMusicControler(self, request):
         if request.method == 'PUT':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_UPDATEMUSICLIST
@@ -105,7 +105,7 @@ class MusicControler(object):
     @csrf_exempt
     def getAllMusicControler(self, request):
         if request.method == 'GET':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETMUSICLIST

@@ -27,7 +27,7 @@ class UserControler(object):
                         USER_EMAIL=req["email"], USER_PHONE=req["phone"]
                         )
             response = {}
-            status = 400
+            status = 200
             message = self.uservice.register(user)
             if message == Constant.SUCCESS_REGISTER:
                 response["message"] = message
@@ -39,13 +39,36 @@ class UserControler(object):
             return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
+    def isloginControler(self, request):
+        if request.method == 'GET':
+            response = {}
+            status = 200
+            try:
+                session_id = request.session["sessionid"]
+                is_login = self.uservice.isLogin(session_id)
+                if is_login == Constant.ERROR_LOGIN_NOLOGIN:
+                    response["message"] = Constant.FAIL_LOGOUT
+                    response["data"] = {}
+                    response["data"]["error"] = is_login
+                else:
+                    response["message"] = Constant.SUCCESS_LOGIN
+                    response["userid"] = is_login
+                    status = 200
+
+            except KeyError, e:
+                response["message"] = Constant.FAIL_LOGOUT
+                response["data"] = {}
+                response["data"]["error"] = Constant.ERROR_LOGIN_NOLOGIN
+            return HttpResponse(content=simplejson.dumps(response), status=status)
+
+    @csrf_exempt
     def loginControler(self, request):
         if request.method == 'POST':
             req = simplejson.loads(request.body)
             username = req["userid"]
             password = req["password"]
             response = {}
-            status = 400
+            status = 200
             try:
                 session_id = request.session["sessionid"]
                 is_login = self.uservice.isLogin(session_id)
@@ -84,7 +107,7 @@ class UserControler(object):
     def logoutControler(self, request):
         if request.method == 'POST':
             response = {}
-            status = 400
+            status = 200
             try:
                 session_id = request.session["sessionid"]
             except KeyError, e:
@@ -109,7 +132,7 @@ class UserControler(object):
     def getUserMessageControler(self, request):
         if request.method == 'GET':
             response = {}
-            status = 400
+            status = 200
             try:
                 session_id = request.session["sessionid"]
             except KeyError, e:
@@ -137,3 +160,43 @@ class UserControler(object):
                 response["data"] = {}
                 response["data"]["error"] = message
             return HttpResponse(content=simplejson.dumps(response), status=status)
+
+    @csrf_exempt
+    def updateUserControler(self, request):
+        if request.method == 'PUT':
+            [sessionid, response] = self.ulity.isEmptySession(request.session)
+            if sessionid == None:
+                response["message"] = Constant.FAIL_UPDATEUSERINFO
+                response["data"] = {}
+                response["data"]["error"] = Constant.ERROR_LOGIN_NOLOGIN
+                return HttpResponse(simplejson.dumps(response))
+            is_login = self.uservice.isLogin(sessionid)
+            req = simplejson.loads(request.body)
+            if is_login == Constant.ERROR_LOGIN_NOLOGIN:
+                response['message'] = Constant.FAIL_UPDATEUSERINFO
+                response['data'] = {}
+                response['data']['error'] = is_login
+            else:
+                user = User(USER_ID=req["userid"], USER_NAME=req["username"], USER_SCHOOL=req["school"], USER_EMAIL=req["email"], USER_PHONE=req["phone"])
+                update_user_message = self.uservice.updateUserInfo(user)
+                if update_user_message != Constant.SUCCESS_UPDATEUSERINFO:
+                    response["message"] = Constant.FAIL_UPDATEUSERINFO
+                    response["data"] = {}
+                    response["data"]["error"] = update_user_message
+                else:
+                    response["message"] = Constant.SUCCESS_UPDATEUSERINFO
+            return HttpResponse(simplejson.dumps(response))
+
+    @csrf_exempt
+    def difMethodLogin(self, request):
+        if request.method == 'GET':
+            return self.isloginControler(request)
+        if request.method == 'POST':
+            return self.loginControler(request)
+
+    @csrf_exempt
+    def difMethodInfo(self, request):
+        if request.method == 'GET':
+            return self.getUserMessageControler(request)
+        if request.method == 'PUT':
+            return self.updateUserControler(request)

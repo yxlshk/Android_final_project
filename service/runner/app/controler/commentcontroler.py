@@ -23,7 +23,7 @@ class CommentControler(object):
     @csrf_exempt
     def createCommentControler(self, request):
         if request.method == 'POST':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATECOMMENT
@@ -51,7 +51,7 @@ class CommentControler(object):
     @csrf_exempt
     def deleteCommentControler(self, request):
         if request.method == 'DELETE':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETECOMMENT
@@ -76,7 +76,7 @@ class CommentControler(object):
     @csrf_exempt
     def getAllCommentControler(self, request):
         if request.method == 'GET':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETALLCOMMENTS

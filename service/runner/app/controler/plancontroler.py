@@ -24,7 +24,7 @@ class PlanControler(object):
     @csrf_exempt
     def createPlanControler(self, request):
         if request.method == 'POST':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATEPLAN
@@ -56,7 +56,7 @@ class PlanControler(object):
     @csrf_exempt
     def deletePlanControler(self, request):
         if request.method == 'DELETE':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETEPLAN
@@ -82,7 +82,7 @@ class PlanControler(object):
     @csrf_exempt
     def updatePlanControler(self, request):
         if request.method == 'PUT':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_UPDATEPLAN
@@ -113,7 +113,7 @@ class PlanControler(object):
     @csrf_exempt
     def getAllPlanControler(self, request):
         if request.method == 'GET':
-            status = 400
+            status = 200
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETALLPLANS
