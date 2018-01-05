@@ -1,5 +1,10 @@
 package com.example.a77354.android_final_project.ToolClass;
 
+import android.content.Context;
+
+import com.example.a77354.android_final_project.Interceptor.AddCookiesInterceptor;
+import com.example.a77354.android_final_project.Interceptor.ReceivedCookiesInterceptor;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -12,21 +17,27 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class HttpTool {
-    public static OkHttpClient createOkHttp() {
+    public static OkHttpClient createOkHttp(Context context, String lang) {
+//        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                .connectTimeout(10, TimeUnit.SECONDS)
+//                .readTimeout(30, TimeUnit.SECONDS)
+//                .writeTimeout(10, TimeUnit.SECONDS)
+//                .build();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(new AddCookiesInterceptor(context, lang))
+                .addInterceptor(new ReceivedCookiesInterceptor(context))
                 .build();
         return okHttpClient;
     }
 
-    public static Retrofit createRetrofit(String baseUrl) {
+    public static Retrofit createRetrofit(String baseUrl, Context context, String lang) {
         return new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(createOkHttp())
+                .client(createOkHttp(context, lang))
                 .build();
     }
+
+
 }

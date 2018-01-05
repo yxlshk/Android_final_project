@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String school = reg_school.getText().toString();
                 RegisterBody reqBody = new RegisterBody(username, username, password, phone, email, school);
 
-                Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/");
+                Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
                 RegisterServiceInterface service = retrofit.create(RegisterServiceInterface.class);
                 Gson gson = new Gson();
                 String postInfoStr = gson.toJson(reqBody);

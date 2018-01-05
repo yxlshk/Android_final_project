@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginBody reqBody = new LoginBody(username.getText().toString(), password.getText().toString());
-                Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/");
+                Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
                 LoginServiceInterface service = retrofit.create(LoginServiceInterface.class);
                 Gson gson = new Gson();
                 String postInfoStr = gson.toJson(reqBody);
