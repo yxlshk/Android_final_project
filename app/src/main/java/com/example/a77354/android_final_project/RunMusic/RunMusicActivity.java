@@ -20,6 +20,7 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,6 +75,7 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
     private TextView curTime;
     private TextView totalTime;
     private int currentSong;
+    private Handler mHandler;
     private static boolean hasPermission;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -88,7 +90,7 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
         //设置service相关
         initService();
         //定义一个Handler
-        final Handler mHandler = new Handler() {
+        mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -290,6 +292,24 @@ public class RunMusicActivity  extends AppCompatActivity implements SwipeBackAct
         bindService(intent, sc, Context.BIND_AUTO_CREATE);
     }
     private void setClickEvent() {
+        FloatingActionButton refresh_song_btn = (FloatingActionButton) findViewById(R.id.refresh_song_btn);
+        refresh_song_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<MusicInfo> tempList = new ArrayList<>();
+                        tempList = scanAllAudioFiles();
+                        dataList.clear();
+                        for(int i = 0; i < tempList.size();i++) {
+                            dataList.add(tempList.get(i));
+                        }
+                        mHandler.sendEmptyMessage(100);
+                    }
+                }).start();
+            }
+        });
         playAndPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
