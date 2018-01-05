@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a77354.android_final_project.HttpServiceInterface.CheckIfLoginService;
 import com.example.a77354.android_final_project.HttpServiceInterface.LoginServiceInterface;
 import com.example.a77354.android_final_project.HttpServiceInterface.RegisterServiceInterface;
 import com.example.a77354.android_final_project.MainActivity;
@@ -101,6 +102,33 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkIfHasLogin() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("cookie", Context.MODE_PRIVATE);
+        String cookie = sharedPreferences.getString("cookie", "");
+        if (cookie == null || cookie.equals("")) {
+            ;
+        } else {
+            Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
+            CheckIfLoginService service = retrofit.create(CheckIfLoginService.class);
+            service.login()
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<ResponseBody >(){
+                        @Override
+                        public final void onCompleted() {
+                            Log.e("test", "已经登陆过");
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
 
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("test", e.getMessage());
+                        }
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            Log.e("test", responseBody.getMessage());
+    //                        Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 }

@@ -16,15 +16,21 @@ import android.widget.Toast;
 import com.example.a77354.android_final_project.HttpServiceInterface.GetPersonalInfoService;
 import com.example.a77354.android_final_project.HttpServiceInterface.LoginServiceInterface;
 import com.example.a77354.android_final_project.HttpServiceInterface.LogoutServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.RegisterServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.UpdateUserInfoService;
 import com.example.a77354.android_final_project.LoginAndRegister.LoginActivity;
+import com.example.a77354.android_final_project.LoginAndRegister.RegisterActivity;
 import com.example.a77354.android_final_project.MyResponseBody.UserInfo;
 import com.example.a77354.android_final_project.RequestBodyStruct.RegisterBody;
 import com.example.a77354.android_final_project.ToolClass.HttpTool;
 import com.example.a77354.android_final_project.ToolClass.ResponseBody;
+import com.google.gson.Gson;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -179,6 +185,37 @@ public class PersonalActivity extends AppCompatActivity  implements SwipeBackAct
                 email_change.setEnabled(false);
                 school_change.setEnabled(false);
                 cur_nickname.setText(nickname_change.getText().toString());
+                UserInfo user = new UserInfo(nickname_change.getText().toString(),
+                        phone_change.getText().toString(),
+                        school_change.getText().toString(),
+                        cur_id.getText().toString(),
+                        email_change.getText().toString());
+                Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
+                UpdateUserInfoService service = retrofit.create(UpdateUserInfoService.class);
+                Gson gson = new Gson();
+                String postInfoStr = gson.toJson(user);
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),postInfoStr);
+
+                service.updateUserinfo(body)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<ResponseBody >(){
+                            @Override
+                            public final void onCompleted() {
+                                Log.e("test", "完成传输");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Toast.makeText(PersonalActivity.this, e.hashCode() + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("test", e.getMessage());
+                            }
+                            @Override
+                            public void onNext(ResponseBody responseBody) {
+                                Log.e("test", responseBody.getMessage());
+                                Toast.makeText(PersonalActivity.this, responseBody.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
