@@ -63,15 +63,5 @@ public class RegisterBody {
     public String getSchool() {
         return school;
     }
-    @Override
-    public String toString() {
-        return "RegisterBody{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email=" + email + '\'' +
-                ", school=" + school +
-                '}';
-    }
 
 }

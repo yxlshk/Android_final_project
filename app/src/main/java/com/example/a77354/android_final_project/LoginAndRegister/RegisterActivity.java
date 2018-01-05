@@ -89,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onNext(ResponseBody responseBody) {
                                 Log.e("test", responseBody.getMessage());
+                                Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
             }
