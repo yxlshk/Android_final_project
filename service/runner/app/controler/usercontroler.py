@@ -27,14 +27,16 @@ class UserControler(object):
                         USER_EMAIL=req["email"], USER_PHONE=req["phone"]
                         )
             response = {}
+            status = 400
             message = self.uservice.register(user)
             if message == Constant.SUCCESS_REGISTER:
                 response["message"] = message
+                status = 200
             else:
                 response["message"] = Constant.FAIL_REGISTER;
                 response["data"] = {}
                 response["data"]["error"] = message
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def loginControler(self, request):
@@ -43,6 +45,7 @@ class UserControler(object):
             username = req["userid"]
             password = req["password"]
             response = {}
+            status = 400
             try:
                 session_id = request.session["sessionid"]
                 is_login = self.uservice.isLogin(session_id)
@@ -54,7 +57,7 @@ class UserControler(object):
                     response["message"] = Constant.FAIL_LOGIN
                     response["data"] = {}
                     response["data"]["error"] = Constant.ERROR_LOGIN_HASOTHERLOGIN
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             except KeyError, e:
                 pass
             login = self.uservice.login(username, password)
@@ -66,6 +69,7 @@ class UserControler(object):
                 if message == Constant.SUCCESS_LOGIN:
                     response["message"] = message
                     request.session["sessionid"] = str(session_id)
+                    status = 200
                 else:
                     response["message"] = Constant.FAIL_LOGIN
                     response["data"] = {}
@@ -74,19 +78,20 @@ class UserControler(object):
                 response["message"] = Constant.FAIL_LOGIN
                 response["data"] = {}
                 response["data"]["error"] = login
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def logoutControler(self, request):
         if request.method == 'POST':
             response = {}
+            status = 400
             try:
                 session_id = request.session["sessionid"]
             except KeyError, e:
                 response["message"] = Constant.FAIL_LOGOUT
                 response["data"] = {}
                 response["data"]["error"] = Constant.ERROR_LOGIN_NOLOGIN
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
 
             is_login = self.uservice.isLogin(session_id)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -96,20 +101,22 @@ class UserControler(object):
             else:
                 response["message"] = Constant.SUCCESS_LOGOUT
                 self.uservice.logout(session_id)
+                status = 200
                 del request.session['sessionid']
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def getUserMessageControler(self, request):
         if request.method == 'GET':
             response = {}
+            status = 400
             try:
                 session_id = request.session["sessionid"]
             except KeyError, e:
                 response["message"] = Constant.FAIL_GETUSERINFO
                 response["data"] = {}
                 response["data"]["error"] = Constant.ERROR_LOGIN_NOLOGIN
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             user_id = request.GET.get("userid")
 
             [message, user_set] = self.uservice.getUserMessage(session_id)
@@ -120,6 +127,7 @@ class UserControler(object):
                     response["school"] = user_set.USER_SCHOOL
                     response["email"] = user_set.USER_EMAIL
                     response["phone"] = user_set.USER_PHONE
+                    status = 200
                 else:
                     response["message"] = Constant.FAIL_GETUSERINFO
                     response["data"] = {}
@@ -128,4 +136,4 @@ class UserControler(object):
                 response["message"] = Constant.FAIL_GETUSERINFO
                 response["data"] = {}
                 response["data"]["error"] = message
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)

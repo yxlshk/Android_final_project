@@ -24,10 +24,11 @@ class PlanControler(object):
     @csrf_exempt
     def createPlanControler(self, request):
         if request.method == 'POST':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATEPLAN
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -48,16 +49,18 @@ class PlanControler(object):
                 else:
                     response["message"] = Constant.SUCCESS_CREATEPLAN
                     response["planid"] = plan.PLAN_ID
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
 
     @csrf_exempt
     def deletePlanControler(self, request):
         if request.method == 'DELETE':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETEPLAN
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -73,15 +76,17 @@ class PlanControler(object):
                     response["data"]["error"] = delete_plan_message
                 else:
                     response["message"] = Constant.SUCCESS_DELETEPLAN
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def updatePlanControler(self, request):
         if request.method == 'PUT':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_UPDATEPLAN
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -102,15 +107,17 @@ class PlanControler(object):
                 else:
                     response["message"] = Constant.SUCCESS_UPDATEPLAN
                     response["planid"] = plan.PLAN_ID
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def getAllPlanControler(self, request):
         if request.method == 'GET':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETALLPLANS
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
                 response['message'] = Constant.FAIL_GETALLPLANS
@@ -129,11 +136,12 @@ class PlanControler(object):
                         plan_json["place"] = plan.PLACE
                         plan_json["addtime"] = plan.ADD_DATETIME.strftime('%Y-%m-%d %H:%M')
                         response[plan.PLAN_ID] = plan_json
+                        status = 200
                 else:
                     response['message'] = Constant.FAIL_GETALLPLANS
                     response['data'] = {}
                     response['data']['error'] = get_allplan_message
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def difMethodPlanControler(self, request):

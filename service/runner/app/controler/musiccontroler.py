@@ -24,10 +24,11 @@ class MusicControler(object):
     @csrf_exempt
     def createMusicControler(self, request):
         if request.method == 'POST':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATEMUSICLIST
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -44,16 +45,18 @@ class MusicControler(object):
                 else:
                     response["message"] = Constant.SUCCESS_CREATEMUSICLIST
                     response["musicid"] = music.MUSIC_ID
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
 
     @csrf_exempt
     def deleteMusicControler(self, request):
         if request.method == 'DELETE':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETEMUSICLIST
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -69,15 +72,17 @@ class MusicControler(object):
                     response["data"]["error"] = delete_musiclist_message
                 else:
                     response["message"] = Constant.SUCCESS_DELETEMUSICLIST
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def updateMusicControler(self, request):
         if request.method == 'PUT':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_UPDATEMUSICLIST
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -94,15 +99,17 @@ class MusicControler(object):
                 else:
                     response["message"] = Constant.SUCCESS_UPDATEMUSICLIST
                     response["musicid"] = music.MUSIC_ID
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def getAllMusicControler(self, request):
         if request.method == 'GET':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETMUSICLIST
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
                 response['message'] = Constant.FAIL_GETMUSICLIST
@@ -117,11 +124,12 @@ class MusicControler(object):
                         music_json["musicname"] = music.MUSIC_LIST
                         music_json["musicuser"] = music.MUSIC_NAME
                         response[music.MUSIC_ID] = music_json
+                        status = 200
                 else:
                     response['message'] = Constant.FAIL_GETMUSICLIST
                     response['data'] = {}
                     response['data']['error'] = get_musiclist_message
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def difMethodMusicControler(self, request):

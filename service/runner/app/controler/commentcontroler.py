@@ -23,10 +23,11 @@ class CommentControler(object):
     @csrf_exempt
     def createCommentControler(self, request):
         if request.method == 'POST':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATECOMMENT
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -43,16 +44,18 @@ class CommentControler(object):
                 else:
                     response["message"] = Constant.SUCCESS_CREATECOMMENT
                     response["commentid"] = comment.COMMENT_ID
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
 
     @csrf_exempt
     def deleteCommentControler(self, request):
         if request.method == 'DELETE':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETECOMMENT
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -67,15 +70,17 @@ class CommentControler(object):
                     response["data"]["error"] = delete_comment_message
                 else:
                     response["message"] = Constant.SUCCESS_DELETECOMMENT
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def getAllCommentControler(self, request):
         if request.method == 'GET':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETALLCOMMENTS
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
                 response['message'] = Constant.FAIL_GETALLCOMMENTS
@@ -92,11 +97,12 @@ class CommentControler(object):
                         comment_json["content"] = comment.COMMENT_CONTENT
                         comment_json["addtime"] = comment.ADD_DATETIME.strftime('%Y-%m-%d %H:%M')
                         response[comment.COMMENT_ID] = comment_json
+                        status = 200
                 else:
                     response['message'] = Constant.FAIL_GETALLCOMMENTS
                     response['data'] = {}
                     response['data']['error'] = get_allcomment_message
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
     @csrf_exempt
     def difMethodCommentControler(self, request):
