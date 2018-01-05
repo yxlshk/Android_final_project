@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                         .subscribe(new Subscriber<ResponseBody >(){
                             @Override
                             public final void onCompleted() {
-                                Log.e("test", "完成传输");
+                                Log.e("test", "登陆成功");
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
