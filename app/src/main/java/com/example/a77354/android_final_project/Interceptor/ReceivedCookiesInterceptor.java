@@ -48,7 +48,7 @@ public class ReceivedCookiesInterceptor implements Interceptor {
                         }
                     });
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            Log.e("test", "receive" + cookieBuffer.toString());
+            Log.d("test", "receive" + cookieBuffer.toString());
             editor.putString("cookie", cookieBuffer.toString());
             Log.d("http", "ReceivedCookiesInterceptor" + cookieBuffer.toString());
             editor.commit();

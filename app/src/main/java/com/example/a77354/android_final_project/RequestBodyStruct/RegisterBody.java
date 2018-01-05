@@ -25,6 +25,15 @@ public class RegisterBody {
         this.email = email;
         this.school = school;
     }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

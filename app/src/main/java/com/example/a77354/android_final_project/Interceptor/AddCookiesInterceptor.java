@@ -47,7 +47,10 @@ public class AddCookiesInterceptor implements Interceptor {
                         Log.e("test", "addCookie" + cookie);
                         //添加cookie
 //                        Log.d("http", "AddCookiesInterceptor"+cookie);
-                        builder.addHeader("sessionid", cookie);
+                        if (cookie == null || cookie.equals("") )
+                            ;
+                        else
+                            builder.addHeader("cookie", cookie);
 
                     }
                 });

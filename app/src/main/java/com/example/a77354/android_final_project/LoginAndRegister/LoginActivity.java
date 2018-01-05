@@ -1,6 +1,8 @@
 package com.example.a77354.android_final_project.LoginAndRegister;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +61,11 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public final void onCompleted() {
                                 Log.e("test", "登陆成功");
+                                SharedPreferences sharedPreferences = getSharedPreferences("userid", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                String Userid = username.getText().toString();
+                                editor.putString("userid", Userid);
+                                editor.commit();
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent);
                             }
