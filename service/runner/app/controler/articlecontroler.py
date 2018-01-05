@@ -24,10 +24,11 @@ class ArticleControler:
     @csrf_exempt
     def createArticleControler(self, request):
         if request.method == 'POST':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_CREATEARTICLE
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -44,16 +45,18 @@ class ArticleControler:
                 else:
                     response["message"] = Constant.SUCCESS_CREATEARTICLE
                     response["articleid"] = article.ARTICLE_ID
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
 
     @csrf_exempt
     def deleteArticleControler(self, request):
         if request.method == 'DELETE':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_DELETEARTICLE
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             req = simplejson.loads(request.body)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
@@ -69,7 +72,8 @@ class ArticleControler:
                     response["data"]["error"] = delete_article_message
                 else:
                     response["message"] = Constant.SUCCESS_DELETEARTICLE
-            return HttpResponse(simplejson.dumps(response))
+                    status = 200
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
 
     @csrf_exempt
@@ -101,10 +105,11 @@ class ArticleControler:
     @csrf_exempt
     def getAllArticleControler(self, request):
         if request.method == 'GET':
+            status = 400
             [sessionid, response] = self.ulity.isEmptySession(request.session)
             if sessionid == None:
                 response["message"] = Constant.FAIL_GETALLARTICLE
-                return HttpResponse(simplejson.dumps(response))
+                return HttpResponse(content=simplejson.dumps(response), status=status)
             is_login = self.uservice.isLogin(sessionid)
             if is_login == Constant.ERROR_LOGIN_NOLOGIN:
                 response['message'] = Constant.FAIL_GETALLARTICLE
@@ -120,11 +125,12 @@ class ArticleControler:
                         article_json["author"] = article.ARTICLE_AUTHOR
                         article_json["addtime"] = article.ADD_DATETIME.strftime('%Y-%m-%d %H:%M')
                         response[article.ARTICLE_ID] = article_json
+                        status = 200
                 else:
                     response['message'] = Constant.FAIL_GETALLARTICLE
                     response['data'] = {}
                     response['data']['error'] = get_allarticle_message
-            return HttpResponse(simplejson.dumps(response))
+            return HttpResponse(content=simplejson.dumps(response), status=status)
 
 
     @csrf_exempt
