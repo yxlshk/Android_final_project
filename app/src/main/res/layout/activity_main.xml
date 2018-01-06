@@ -26,7 +26,7 @@
                 android:id="@+id/run"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="开始跑步"
+                android:text="点击开始跑步"
                 android:textSize="26dp"
                 android:background="@color/blue"
                 android:textColor="@color/white"

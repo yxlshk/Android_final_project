@@ -5,16 +5,22 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import com.example.a77354.android_final_project.HttpServiceInterface.CreatePlanServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.GetPlanServiceInterface;
 import com.example.a77354.android_final_project.RunPlan.PlanEntity;
 import com.example.a77354.android_final_project.R;
+import com.example.a77354.android_final_project.ToolClass.HttpTool;
+import com.example.a77354.android_final_project.ToolClass.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +30,10 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 import recycler.coverflow.CoverFlowLayoutManger;
 import recycler.coverflow.RecyclerCoverFlow;
+import retrofit2.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by shujunhuai on 2017/12/26.
@@ -72,12 +82,30 @@ public class RunPlanActivity extends AppCompatActivity implements SwipeBackActiv
     }
 
     private void prepareDataList() {
-        for (int i = 0; i < 15; i++) {
-            dataList.add(new PlanEntity("12.31 16:00", "假草操场", "五五开"));
-            dataList.add(new PlanEntity("1.1 18:00", "内环", "坤哥"));
-            dataList.add(new PlanEntity("12.31 16:00", "假草操场", "五五开"));
-            dataList.add(new PlanEntity("12.31 16:00", "假草操场", "五五开"));
-        }
+        Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
+        GetPlanServiceInterface service = retrofit.create(GetPlanServiceInterface.class);
+        service.getPlan()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<PlanGetFromService> >(){
+                    @Override
+                    public final void onCompleted() {
+                        Log.e("test", "完成传输");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(RunPlanActivity.this, e.hashCode() + "确认信息是否符合标准", Toast.LENGTH_SHORT).show();
+                        Log.e("test", e.getMessage());
+                    }
+                    @Override
+                    public void onNext(List<PlanGetFromService> responseBody) {
+                        Log.e("test", responseBody.toString());
+                        for (int i = 0; i < responseBody.size(); i++) {
+                            dataList.add(new PlanEntity("", responseBody.get(i).getPlanTime(), responseBody.get(i).getPlanPlace(), responseBody.get(i).getPlanPartner()));
+                        }
+                    }
+                });
     }
 
     @Override

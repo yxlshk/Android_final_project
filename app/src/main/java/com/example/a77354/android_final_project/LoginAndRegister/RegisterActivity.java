@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 String postInfoStr = gson.toJson(reqBody);
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),postInfoStr);
-
+                Log.d("json",body.toString());
                 service.register(body)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())

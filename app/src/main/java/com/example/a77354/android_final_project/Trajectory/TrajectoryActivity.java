@@ -1,6 +1,7 @@
 package com.example.a77354.android_final_project.Trajectory;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,8 @@ import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
 public class TrajectoryActivity  extends AppCompatActivity implements SwipeBackActivityBase {
     private SwipeBackActivityHelper swipeBackActivityHelper;
     private ISlidingUpPanel mSlidingUpPanel;
-
+    private TextView totoal_time;
+    private int recLen = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,22 @@ public class TrajectoryActivity  extends AppCompatActivity implements SwipeBackA
                 }
             }
         });
+        setTotalTime();
     }
+
+    public void setTotalTime() {
+        totoal_time = (TextView) findViewById(R.id.total_time);
+        handler.postDelayed(runnable, 1000);
+    }
+    Handler handler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            recLen++;
+            totoal_time.setText("" + recLen + "s");
+            handler.postDelayed(this, 1000);
+        }
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
