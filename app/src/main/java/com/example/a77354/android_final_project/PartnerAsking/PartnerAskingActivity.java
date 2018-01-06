@@ -7,22 +7,35 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.a77354.android_final_project.HttpServiceInterface.GetArticleServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.GetPlanServiceInterface;
 import com.example.a77354.android_final_project.R;
+import com.example.a77354.android_final_project.RunPlan.PlanEntity;
+import com.example.a77354.android_final_project.RunPlan.RunPlanActivity;
+import com.example.a77354.android_final_project.ToolClass.HttpTool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.Utils;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityHelper;
+import retrofit2.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by shujunhuai on 2018/1/4.
@@ -73,8 +86,6 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = getAdapter();
         recyclerView.setAdapter(adapter);
-        prepareDataList();
-        adapter.notifyDataSetChanged();
 
         //点击编辑一条新的帖子
         FloatingActionButton addNewAskingBtn = (FloatingActionButton) findViewById(R.id.add_new_asking);
@@ -84,12 +95,73 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
                 startActivity(new Intent(PartnerAskingActivity.this, NewAskingActivity.class));
             }
         });
+
+        // 准备用来处理约跑功能
+        LayoutInflater factor = LayoutInflater.from(PartnerAskingActivity.this);
+        final View view_in = factor.inflate(R.layout.partner_asking_item_layout, null);
+        ImageButton yue = (ImageButton) view_in.findViewById(R.id.yue);
+        yue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void prepareDataList() {
-        for (int i = 0; i < 5; i++) {
-            dataList.add(new PartnerAskingActivity.temp("shujh", "寻找本周五晚上的跑步小伙伴～","1月3日，18：00"));
-        }
+        Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
+        GetArticleServiceInterface service = retrofit.create(GetArticleServiceInterface.class);
+        service.getArticle()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Map<String, Map<String, String>>>(){
+                    @Override
+                    public final void onCompleted() {
+                        Log.e("test", "完成传输");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(PartnerAskingActivity.this, e.hashCode() + "确认信息是否符合标准", Toast.LENGTH_SHORT).show();
+                        Log.e("test", e.getMessage());
+                    }
+                    @Override
+                    public void onNext(Map<String, Map<String, String>> responseBody) {
+                        Log.e("test", responseBody.toString());
+                        String articleid = "", title = "", author = "", content = "", addtime = "";
+                        for (Map.Entry<String, Map<String, String>> entry : responseBody.entrySet()) {
+                            for (Map.Entry<String, String> plan : entry.getValue().entrySet()) {
+                                switch (plan.getKey()) {
+                                    case "articleid":
+                                        articleid = plan.getValue();
+                                        break;
+                                    case "title":
+                                        title = plan.getValue();
+                                        break;
+                                    case "author":
+                                        author = plan.getValue();
+                                        break;
+                                    case "content":
+                                        content = plan.getValue();
+                                        break;
+                                    case "addtime":
+                                        addtime = plan.getValue();
+                                        break;
+                                    default:
+                                        Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                        dataList.add(new PartnerAskingActivity.temp(author, title, addtime));
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
+    protected void onStart() {
+        super.onStart();
+        dataList.clear();
+        prepareDataList();
     }
 
     private RecyclerView.Adapter getAdapter() {

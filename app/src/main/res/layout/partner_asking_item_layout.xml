@@ -66,6 +66,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1">
                         <ImageButton
+                            android:id="@+id/yue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:scaleType="fitXY"
@@ -96,7 +97,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:text="五五开、坤哥"
+                        android:text=""
                         android:id="@+id/partner_list"
                         android:textColor="@color/themeBule"/>
                 </LinearLayout>

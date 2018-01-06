@@ -1,5 +1,8 @@
 package com.example.a77354.android_final_project.RunPlan;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by 77354 on 2018/1/6.
  */
@@ -9,10 +12,10 @@ public class PlanGetFromService {
     private String planname;
     private String author;
     private String runtime;
+    private ArrayList partner; //  约跑小伙伴
     private String place;
-    private String partner; //  约跑小伙伴
 
-    public PlanGetFromService(String planid, String n, String a, String t, String p, String paner) {
+    public PlanGetFromService(String planid, String n, String a, String t, String p, ArrayList paner) {
         this.planid = planid;
         this.planname = n;
         this.author = a;
@@ -33,7 +36,7 @@ public class PlanGetFromService {
         this.author = Author;
     }
 
-    public void setPlanPartner(String planPartner) {
+    public void setPlanPartner(ArrayList planPartner) {
         this.partner = planPartner;
     }
 
@@ -56,7 +59,7 @@ public class PlanGetFromService {
     public String getAuthor() {
         return author;
     }
-    public String getPlanPartner() {
+    public ArrayList getPlanPartner() {
         return partner;
     }
 

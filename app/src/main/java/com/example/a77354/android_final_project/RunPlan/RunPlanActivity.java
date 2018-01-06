@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 
 import com.example.a77354.android_final_project.HttpServiceInterface.CreatePlanServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.DeletePlanServiceInterface;
 import com.example.a77354.android_final_project.HttpServiceInterface.GetPlanServiceInterface;
 import com.example.a77354.android_final_project.RunPlan.PlanEntity;
 import com.example.a77354.android_final_project.R;
@@ -24,6 +25,7 @@ import com.example.a77354.android_final_project.ToolClass.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivityBase;
@@ -58,8 +60,6 @@ public class RunPlanActivity extends AppCompatActivity implements SwipeBackActiv
 
         //recyclerView伪数据填充
         adapter = getAdapter();
-        prepareDataList();
-        adapter.notifyDataSetChanged();
 
         //动画效果
         RecyclerCoverFlow mList = (RecyclerCoverFlow) findViewById(R.id.plan_list);
@@ -87,7 +87,7 @@ public class RunPlanActivity extends AppCompatActivity implements SwipeBackActiv
         service.getPlan()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<PlanGetFromService> >(){
+                .subscribe(new Subscriber<Map<String, PlanGetFromService>> (){
                     @Override
                     public final void onCompleted() {
                         Log.e("test", "完成传输");
@@ -99,13 +99,24 @@ public class RunPlanActivity extends AppCompatActivity implements SwipeBackActiv
                         Log.e("test", e.getMessage());
                     }
                     @Override
-                    public void onNext(List<PlanGetFromService> responseBody) {
+                    public void onNext(Map<String, PlanGetFromService> responseBody) {
                         Log.e("test", responseBody.toString());
-                        for (int i = 0; i < responseBody.size(); i++) {
-                            dataList.add(new PlanEntity("", responseBody.get(i).getPlanTime(), responseBody.get(i).getPlanPlace(), responseBody.get(i).getPlanPartner()));
+                        for (Map.Entry<String, PlanGetFromService> entry : responseBody.entrySet()) {
+                            String partner = "";
+                            for (int i = 0; i < entry.getValue().getPlanPartner().size(); i++) {
+                                partner += entry.getValue().getPlanPartner().get(i).toString();
+                            }
+                            dataList.add(new PlanEntity(entry.getValue().getPlanName(), entry.getValue().getPlanTime(), entry.getValue().getPlanPlace(), partner));
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 });
+    }
+
+    protected void onStart() {
+        super.onStart();
+        dataList.clear();
+        prepareDataList();
     }
 
     @Override

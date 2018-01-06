@@ -89,5 +89,13 @@ public class AddNewPlanActivity extends AppCompatActivity {
                         });
             }
         });
+
+        Button cancle = (Button) findViewById(R.id.cancel_new_btn);
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();;
+            }
+        });
     }
 }

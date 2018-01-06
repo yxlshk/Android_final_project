@@ -7,8 +7,8 @@
     android:background="@drawable/bg5">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/partner_asking_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="445dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -26,5 +26,6 @@
         android:layout_marginBottom="10dp"
         android:id="@+id/add_new_asking"
         app:pressedTranslationZ="12dp"
-        app:borderWidth="0dp"/>
+        app:borderWidth="0dp"
+        android:layout_marginEnd="20dp" />
 </android.support.constraint.ConstraintLayout>
