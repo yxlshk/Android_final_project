@@ -151,8 +151,8 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
                                         Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
                                 }
                             }
+                            dataList.add(new PartnerAskingActivity.temp(author, title, addtime));
                         }
-                        dataList.add(new PartnerAskingActivity.temp(author, title, addtime));
                         adapter.notifyDataSetChanged();
                     }
                 });
