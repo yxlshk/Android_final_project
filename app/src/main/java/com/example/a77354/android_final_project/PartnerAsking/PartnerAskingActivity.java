@@ -17,7 +17,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a77354.android_final_project.HttpServiceInterface.CreateCommentServiceInterface;
 import com.example.a77354.android_final_project.HttpServiceInterface.GetArticleServiceInterface;
+import com.example.a77354.android_final_project.HttpServiceInterface.GetCommentServiceInterface;
 import com.example.a77354.android_final_project.HttpServiceInterface.GetPlanServiceInterface;
 import com.example.a77354.android_final_project.R;
 import com.example.a77354.android_final_project.RunPlan.PlanEntity;
@@ -46,11 +48,13 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
         private String publisher;
         private String content;
         private String publishTime;
+        private String partnerList;
         //还有两个变量，一个是发布者的头像、一个是有记得人点"约"，即点"约"列表
-        public temp(String publisher, String content, String publishTime) {
+        public temp(String publisher, String content, String publishTime, String partnerList) {
             this.publisher = publisher;
             this.content = content;
             this.publishTime = publishTime;
+            this.partnerList = partnerList;
         }
 
         public String getContent() {
@@ -64,11 +68,16 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
         public String getPublishTime() {
             return publishTime;
         }
+
+        public String getPartnerList() {
+            return partnerList;
+        }
     }
 
     private SwipeBackActivityHelper swipeBackActivityHelper;
     private List<PartnerAskingActivity.temp> dataList = new ArrayList<>();
     private RecyclerView.Adapter adapter;
+    Map<String, String> yue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,18 +106,42 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
         });
 
         // 准备用来处理约跑功能
-        LayoutInflater factor = LayoutInflater.from(PartnerAskingActivity.this);
-        final View view_in = factor.inflate(R.layout.partner_asking_item_layout, null);
-        ImageButton yue = (ImageButton) view_in.findViewById(R.id.yue);
-        yue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+//        LayoutInflater factor = LayoutInflater.from(PartnerAskingActivity.this);
+//        final View view_in = factor.inflate(R.layout.partner_asking_item_layout, null);
+//        ImageButton yue = (ImageButton) view_in.findViewById(R.id.yue);
+//        yue.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     private void prepareDataList() {
+//        Retrofit retrofit1 = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
+//        GetCommentServiceInterface service1 = retrofit1.create(GetCommentServiceInterface.class);
+//        service1.getComment()
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<Map<String, CommentFromService>>() {
+//                    @Override
+//                    public final void onCompleted() {
+//                        Log.e("test", "完成传输");
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Toast.makeText(PartnerAskingActivity.this, e.hashCode() + "确认信息是否符合标准", Toast.LENGTH_SHORT).show();
+//                        Log.e("test", e.getMessage());
+//                    }
+//                    @Override
+//                    public void onNext(Map<String, CommentFromService> responseBody) {
+//                        Log.e("test", responseBody.toString());
+//                        for (Map.Entry<String, CommentFromService> entry : responseBody.entrySet()) {
+//                            String people = yue.get(entry.getValue().getContent()) + entry.getValue().getAuthor();
+//                            yue.put(entry.getValue().getContent(), people);
+//                        }
+//                    }
+//                });
         Retrofit retrofit = HttpTool.createRetrofit("http://112.124.47.197:4000/api/runner/", getApplicationContext(), "en");
         GetArticleServiceInterface service = retrofit.create(GetArticleServiceInterface.class);
         service.getArticle()
@@ -151,8 +184,9 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
                                         Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
                                 }
                             }
+                            //dataList.add(new PartnerAskingActivity.temp(author, title, addtime, yue.get(title)));
+                            dataList.add(new PartnerAskingActivity.temp(author, title, addtime, ""));
                         }
-                        dataList.add(new PartnerAskingActivity.temp(author, title, addtime));
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -192,12 +226,14 @@ public class PartnerAskingActivity extends AppCompatActivity implements SwipeBac
         TextView publisher;
         TextView content;
         TextView publishTime;
+        TextView partnerList;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             this.publisher = (TextView) itemView.findViewById(R.id.publisher_nickname);
             this.content = (TextView) itemView.findViewById(R.id.publish_content);
             this.publishTime = (TextView) itemView.findViewById(R.id.publish_time);
+            this.partnerList = (TextView) itemView.findViewById(R.id.partner_list);
         }
 
         public void bindData(PartnerAskingActivity.temp temp) {
