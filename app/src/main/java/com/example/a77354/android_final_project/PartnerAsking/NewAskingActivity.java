@@ -1,5 +1,6 @@
 package com.example.a77354.android_final_project.PartnerAsking;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -65,7 +66,7 @@ public class NewAskingActivity extends AppCompatActivity {
                         .subscribe(new Subscriber<ResponseBody>(){
                             @Override
                             public final void onCompleted() {
-                                Log.e("test", "完成传输");
+                            //    Log.e("test", "完成传输");
                             }
 
                             @Override
@@ -76,7 +77,13 @@ public class NewAskingActivity extends AppCompatActivity {
                             @Override
                             public void onNext(ResponseBody responseBody) {
                                 Log.e("test", responseBody.getMessage());
-                                Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                                if(responseBody.getMessage().equals("Create article successfully")) {
+                                    Toast.makeText(getApplicationContext(), responseBody.getMessage(), Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent( NewAskingActivity.this, PartnerAskingActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }

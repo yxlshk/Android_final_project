@@ -73,18 +73,23 @@ public class AddNewPlanActivity extends AppCompatActivity {
                         .subscribe(new Subscriber<ResponseBody >(){
                             @Override
                             public final void onCompleted() {
-                                Log.e("test", "完成传输");
+                        //        Log.e("test", "完成传输");
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(AddNewPlanActivity.this, e.hashCode() + "确认信息是否符合标准", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddNewPlanActivity.this, e.hashCode() + "时间格式应为2000-01-01 00:00", Toast.LENGTH_SHORT).show();
                                 Log.e("test", e.getMessage());
                             }
                             @Override
                             public void onNext(ResponseBody responseBody) {
                                 Log.e("test", responseBody.getMessage());
-                                Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                                if (responseBody.getMessage().equals("Create plan successfully")) {
+                                    Toast.makeText(getApplicationContext(), responseBody.getMessage(), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
             }

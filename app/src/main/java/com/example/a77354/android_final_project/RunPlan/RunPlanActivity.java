@@ -95,8 +95,8 @@ public class RunPlanActivity extends AppCompatActivity implements SwipeBackActiv
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(RunPlanActivity.this, e.hashCode() + "确认信息是否符合标准", Toast.LENGTH_SHORT).show();
-                        Log.e("test", e.getMessage());
+                    //    Toast.makeText(RunPlanActivity.this, e.hashCode() + "确认信息是否符合标准", Toast.LENGTH_SHORT).show();
+                        Log.e("test", "what " + e.getMessage());
                     }
                     @Override
                     public void onNext(Map<String, PlanGetFromService> responseBody) {
