@@ -62,25 +62,31 @@ public class LoginActivity extends AppCompatActivity {
                         .subscribe(new Subscriber<ResponseBody >(){
                             @Override
                             public final void onCompleted() {
-                                Log.e("test", "登陆成功");
-                                SharedPreferences sharedPreferences = getSharedPreferences("userid", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                String Userid = username.getText().toString();
-                                editor.putString("userid", Userid);
-                                editor.commit();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                ;
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Toast.makeText(LoginActivity.this, e.hashCode() + "账号/密码错误", Toast.LENGTH_SHORT).show();
-                                Log.e("test", e.getMessage());
+//                                Toast.makeText(LoginActivity.this, e.hashCode() + "账号/密码错误", Toast.LENGTH_SHORT).show();
+//                                Log.e("test", e.getMessage());
                             }
                             @Override
                             public void onNext(ResponseBody responseBody) {
                                 Log.e("test", responseBody.getMessage());
-                                Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                                if (responseBody.getMessage().equals("Fail to login")) {
+                                 //   Toast.makeText(LoginActivity.this,  "账号/密码错误", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), responseBody.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.e("test", "登陆失败");
+                                } else {
+                                    SharedPreferences sharedPreferences = getSharedPreferences("userid", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    String Userid = username.getText().toString();
+                                    editor.putString("userid", Userid);
+                                    editor.commit();
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    Log.e("test", "登陆成功");
+                                }
                             }
                         });
 
