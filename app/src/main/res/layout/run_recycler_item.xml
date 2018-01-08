@@ -23,7 +23,7 @@
             <ImageView
                 android:id="@+id/item_trend_flag"
                 android:layout_width="280sp"
-                android:layout_height="360sp"
+                android:layout_height="300sp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:scaleType="fitXY"

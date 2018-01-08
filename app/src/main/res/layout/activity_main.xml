@@ -63,7 +63,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="shujh"
+                    android:text="个人中心"
                     android:textColor="@color/menu_text_color"
                     android:textSize="18sp" />
             </LinearLayout>

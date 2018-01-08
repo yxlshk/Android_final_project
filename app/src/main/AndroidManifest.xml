@@ -38,7 +38,7 @@
         <activity android:name=".Trajectory.TrajectoryActivity"> </activity>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="vz3NEizCE8mojpzyxi8sOUYqnpYm4zfb"></meta-data>
+            android:value="mX2ZvcCwDZkhh3pqeom3YaDqkwdHCtmH"></meta-data>
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

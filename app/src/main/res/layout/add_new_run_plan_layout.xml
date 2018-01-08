@@ -30,6 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/new_plan_time_label"
+
         app:layout_constraintTop_toBottomOf="@+id/line"
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="时    间："
@@ -43,6 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:id="@+id/new_plan_time"
+        android:hint="2010-01-01 08:08"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/line"
         app:layout_constraintLeft_toRightOf="@+id/new_plan_time_label"
