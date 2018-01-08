@@ -246,6 +246,8 @@ public class PersonalActivity extends AppCompatActivity  implements SwipeBackAct
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString("cookie", "");
                                 editor.commit();
+                                Intent intent = new Intent(PersonalActivity.this, LoginActivity.class);
+                                startActivity(intent);
                             //    System.exit(-1);
                             }
                         });
